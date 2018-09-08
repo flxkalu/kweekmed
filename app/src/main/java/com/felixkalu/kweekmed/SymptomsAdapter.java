@@ -10,17 +10,17 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomAdapter extends BaseAdapter{
+public class SymptomsAdapter extends BaseAdapter{
 
     Activity activity;
     List<SymptomModel> symptoms;
     LayoutInflater inflater;
 
-    public CustomAdapter(Activity activity) {
+    public SymptomsAdapter(Activity activity) {
         this.activity = activity;
     }
 
-    public CustomAdapter(Activity activity, List<SymptomModel> symptoms) {
+    public SymptomsAdapter(Activity activity, List<SymptomModel> symptoms) {
         this.activity = activity;
         this.symptoms = symptoms;
 

@@ -1,14 +1,16 @@
 package com.felixkalu.kweekmed;
 
 
-public class UserModel {
+public class SymptomModel {
 
     boolean isSelected;
-    String userName;
+    String symptomName;
+    String symptomId;
 
-    public UserModel(boolean isSelected, String userName) {
+    public SymptomModel(boolean isSelected, String symptomName, String symptomId) {
         this.isSelected = isSelected;
-        this.userName = userName;
+        this.symptomName = symptomName;
+        this.symptomId = symptomId;
     }
 
     public boolean isSelected() {
@@ -19,11 +21,19 @@ public class UserModel {
         isSelected = selected;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return symptomName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setSymptomName(String symptomName) {
+        this.symptomName = symptomName;
+    }
+
+    public String getSymptomId() {
+        return symptomId;
+    }
+
+    public void setSymptomId(String symptomId) {
+        this.symptomId = symptomId;
     }
 }

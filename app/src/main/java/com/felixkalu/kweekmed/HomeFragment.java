@@ -1,6 +1,8 @@
 package com.felixkalu.kweekmed;
 
 
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -41,6 +43,7 @@ public class HomeFragment extends Fragment {
            public void onClick(View v) {
                //open the next fragment as it is in webMD app
                Log.i("Note", "SearchView clicked");
+
            }
        });
 
@@ -49,12 +52,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i("Note", "symptoms checker clicked");
+
+                SymptomsCheckerFragment symptomsCheckerFragment = new SymptomsCheckerFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
+                fragmentTransaction.commit();
             }
         });
-
-
-
-
 
         return v;
     }
