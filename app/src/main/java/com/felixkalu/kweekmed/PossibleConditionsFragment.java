@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class PossibleConditionsFragment extends Fragment {
 
-
     public PossibleConditionsFragment() {
         // Required empty public constructor
     }
@@ -41,8 +40,7 @@ public class PossibleConditionsFragment extends Fragment {
     private ProgressBar progressBar;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_possible_conditions, container, false);
 
@@ -52,11 +50,8 @@ public class PossibleConditionsFragment extends Fragment {
         listView = (ListView) v.findViewById(R.id.listview);
 
         DownloadTask task = new DownloadTask();
-        task.execute("https://healthservice.priaid.ch/diagnosis?symptoms=[9,10,11]&gender=female&year_of_birth=32&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZseGthbHVAaG90bWFpbC5jby51ayIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMTA4OCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjEwOCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiIxMDAiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJCYXNpYyIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGFuZ3VhZ2UiOiJlbi1nYiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IjIwOTktMTItMzEiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXBzdGFydCI6IjIwMTgtMDktMDUiLCJpc3MiOiJodHRwczovL2F1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE1MzY1MDQzNDIsIm5iZiI6MTUzNjQ5NzE0Mn0.yQeGErTGRSmVj4pn6SRTKs9U9JXcZAG33dQb1ZtkWf0&format=json&language=en-gb");
 
-
-
-
+        task.execute("https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=[9,10,11]&gender=male&year_of_birth=32&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZseGthbHVAaG90bWFpbC5jby51ayIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMzc5NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAxOC0wOS0wNSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTM2NjEyNjY3LCJuYmYiOjE1MzY2MDU0Njd9.UZ4aMAwRQuyZcUN8vyqpSmHJ9vGzSWwoiY_tk0Aan0w&format=json&language=en-gb");
         return v;
     }
 
@@ -105,37 +100,79 @@ public class PossibleConditionsFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            final ArrayList <String> possibleConditions = new ArrayList<String>();
+            final ArrayList <DiagnosisModel> diagnosis = new ArrayList<>();
 
             try {
 
                 JSONArray jsonArray = new JSONArray(result);
-                    //get the conditions
-                    for(int i=0; i<jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String id = jsonObject.getString("Specialisation");
-                        Log.i("Issue: ", id);
+                for(int i=0; i<jsonArray.length(); i++) {
+                    //used for storing specialisations returned in the inner loop
 
-                                //get the specializations inside every condition
-                                JSONArray internalArray = new JSONArray(id);
-                                for(int a=0; a<internalArray.length(); a++) {
-                                    JSONObject jsonObjectInternal = internalArray.getJSONObject(a);
-                                    String name = jsonObjectInternal.getString("Name");
+                    //JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    //id += jsonArray.getJSONObject(i).getJSONObject("Issue").toString();
+                    String specialisationName = "";
+                    String issueName = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Name");
+                    String accuracy = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Accuracy");
 
-                                    //display the specializations
-                                    Log.i("Specialization", name);
+                    Log.i("IssueName: ", issueName);
+                    Log.i("Accuracy: ", accuracy);
 
-                                }
-                        //String name = jsonObject.getString("Name");
+                    //diagnosis.add(new DiagnosisModel("Headache", "009" , "General"));
 
-                        possibleConditions.add(id);
-                        Log.i("Line: ", " : " + i);
+                    //for getting the specialization of the issue.
+                    int arrayLength = jsonArray.getJSONObject(i).getJSONArray("Specialisation").length();
+                    for (int j = 0; j < arrayLength; j++) {
+                        specialisationName += jsonArray.getJSONObject(i).getJSONArray("Specialisation").getJSONObject(j).getString("Name")+" ";
+                        Log.i("Specialisation: ", specialisationName);
+                    }
+                    diagnosis.add(new DiagnosisModel(issueName,accuracy,specialisationName));
                 }
+
+//                Log.i("ID: ", id);
+//                    //get the conditions
+//                    for(int i=0; i<jsonArray.length(); i++) {
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+//                                //get the specializations inside every condition
+//                                JSONArray internalArray = new JSONArray(id);
+//                                for(int a=0; a<internalArray.length(); a++) {
+//                                    JSONObject jsonObjectInternal = internalArray.getJSONObject(a);
+//                                    String name = jsonObjectInternal.getString("Name");
+//
+//                                    //display the specializations
+//                                    Log.i("Specialization", name);
+//
+//
+//                                }
+//                       // String name = jsonObject.getString("Name");
+//
+//                        //possibleConditions.add(id);
+//                        Log.i("Line: ", " : " + i);
+//                }
                 progressBar.setVisibility(View.GONE);
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, possibleConditions);
-                listView.setAdapter(arrayAdapter);
+                final DiagnosisAdapter adapter = new DiagnosisAdapter(getActivity(), diagnosis);
+                listView.setAdapter(adapter);
 
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        DiagnosisModel model = diagnosis.get(i);
+
+//                        if(model.isSelected()) {
+//                            model.setSelected(false);
+//                            Log.i("you removed", model.getName());
+//                        } else {
+//                            model.setSelected(true);
+//                            Log.i("you Added", model.getName());
+//                        }
+
+                        diagnosis.set(i, model);
+
+                        adapter.updateRecords(diagnosis);
+                    }
+                });
 
             } catch (JSONException e) {
                 Log.i("MESSAGE 3: ", e.toString());
