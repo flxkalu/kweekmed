@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout mMainFrame;
 
     private HomeFragment homeFragment;
+    private NewsFragment newsFragment;
     private NotificationFragment notificationFragment;
 
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         notificationFragment = new NotificationFragment();
+        newsFragment = new NewsFragment();
 
         setFragment(homeFragment);
 
@@ -52,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
                         mMainNav.setItemBackgroundResource(R.color.colorPrimaryDark);
                         return true;
 
+                    case R.id.nav_news:
+                        mMainNav.setItemBackgroundResource(R.color.colorPrimary);
+                        setFragment(newsFragment);
+                        return true;
+
                     default:
                         return false;
                 }
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
 

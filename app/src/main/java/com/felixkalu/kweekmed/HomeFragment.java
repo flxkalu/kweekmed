@@ -20,11 +20,9 @@ import com.squareup.picasso.Picasso;
  */
 public class HomeFragment extends Fragment {
 
-
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +32,7 @@ public class HomeFragment extends Fragment {
         //initializing elements
         ImageView imageView = (ImageView)v.findViewById(R.id.imageView);
         ImageView symptomsCheckerImageView = (ImageView)v.findViewById(R.id.symptomsCheckerImageView);
+        ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
 
         SearchView searchView = (SearchView) v.findViewById(R.id.searchView1);
 
@@ -43,7 +42,6 @@ public class HomeFragment extends Fragment {
            public void onClick(View v) {
                //open the next fragment as it is in webMD app
                Log.i("Note", "SearchView clicked");
-
            }
        });
 
@@ -53,13 +51,26 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Log.i("Note", "symptoms checker clicked");
 
-                SymptomsCheckerFragment symptomsCheckerFragment = new SymptomsCheckerFragment();
+                EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
+                fragmentTransaction.replace(R.id.main_frame, enterSymptomInfoFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
 
+        possibleIssuesImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Note", "Possible Issues Clicked");
+
+                PossibleIssuesFragment possibleIssuesFragment = new PossibleIssuesFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         return v;
     }
 }

@@ -49,7 +49,7 @@ public class SymptomsAdapter extends BaseAdapter{
 
         if(view == null) {
 
-            view = inflater.inflate(R.layout.list_view_item, viewGroup, false);
+            view = inflater.inflate(R.layout.symptoms_list_view_item, viewGroup, false);
 
             holder = new ViewHolder();
 
