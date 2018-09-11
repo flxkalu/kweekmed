@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+//will push this file from the software gurus account to test and be sure i am understanding github better.
+//I will use this comment to check and be sure things go file
 public class DiagnosisAdapter extends BaseAdapter {
 
     Activity activity;
