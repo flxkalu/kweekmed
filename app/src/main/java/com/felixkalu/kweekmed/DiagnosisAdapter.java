@@ -16,7 +16,8 @@ import android.widget.TextView;
 import java.util.List;
 
 //will push this file from the software gurus account to test and be sure i am understanding github better.
-//I will use this comment to check and be sure things go file
+//I will use this comment to check and be sure things go file.
+//added one more line after I changed the default email address on my desktop computer android studio git to thesoftwaregurus@gmail.com
 public class DiagnosisAdapter extends BaseAdapter {
 
     Activity activity;
