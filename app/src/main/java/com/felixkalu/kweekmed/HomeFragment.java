@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment {
            public void onClick(View v) {
                //open the next fragment as it is in webMD app
                Log.i("Note", "SearchView clicked");
-
            }
        });
 
@@ -52,9 +51,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Log.i("Note", "symptoms checker clicked");
 
-                SymptomsCheckerFragment symptomsCheckerFragment = new SymptomsCheckerFragment();
+                EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
+                fragmentTransaction.replace(R.id.main_frame, enterSymptomInfoFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment {
                 PossibleIssuesFragment possibleIssuesFragment = new PossibleIssuesFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
