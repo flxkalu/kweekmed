@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private HomeFragment homeFragment;
     private NewsFragment newsFragment;
+    private SettingsFragment settingsFragment;
     private NotificationFragment notificationFragment;
 
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         notificationFragment = new NotificationFragment();
         newsFragment = new NewsFragment();
+        settingsFragment  = new SettingsFragment();
 
         setFragment(homeFragment);
 
@@ -50,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(notificationFragment);
                         return true;
 
-                    case R.id.nav_account:
+                    case R.id.nav_settings:
                         mMainNav.setItemBackgroundResource(R.color.colorPrimaryDark);
+                        setFragment(settingsFragment);
                         return true;
 
                     case R.id.nav_news:

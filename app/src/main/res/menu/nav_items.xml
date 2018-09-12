@@ -18,8 +18,8 @@
         android:title="@string/nav_notif" />
 
     <item
-        android:id="@+id/nav_account"
-        android:icon="@drawable/outline_forum_black_24dp2x"
-        android:title="@string/nav_account" />
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/settings"
+        android:title="Settings" />
 
 </menu>

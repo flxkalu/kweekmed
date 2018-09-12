@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
         ImageView imageView = (ImageView)v.findViewById(R.id.imageView);
         ImageView symptomsCheckerImageView = (ImageView)v.findViewById(R.id.symptomsCheckerImageView);
         ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
+        ImageView findaDoctorImageView = (ImageView) v.findViewById(R.id.findaDoctorImageView);
 
         SearchView searchView = (SearchView) v.findViewById(R.id.searchView1);
 
@@ -67,6 +68,17 @@ public class HomeFragment extends Fragment {
                 PossibleIssuesFragment possibleIssuesFragment = new PossibleIssuesFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        findaDoctorImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FindDoctorFragment findDoctorFragment = new FindDoctorFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, findDoctorFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
