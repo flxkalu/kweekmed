@@ -8,12 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +18,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 /**
@@ -47,7 +43,7 @@ public class PossibleIssuesDetailFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_possible_issues_detail, container, false);
 
-        descriptionTextView = (TextView)v.findViewById(R.id.descriptionTextView);
+        descriptionTextView = (TextView)v.findViewById(R.id.doctorsDetailsDescriptionTextView);
         medicalConditiontextView = (TextView)v.findViewById(R.id.medicalConditiontextView);
         nameTextview = (TextView)v.findViewById(R.id.nameTextview);
         possibleSymptomsTextView = (TextView)v.findViewById(R.id.possibleSymptomsTextView);

@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/descriptionTextView"
+            android:id="@+id/doctorsDetailsDescriptionTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -53,7 +53,7 @@
             android:text="Medical Condition"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/doctorsDetailsDescriptionTextView" />
 
         <TextView
             android:id="@+id/medicalConditiontextView"

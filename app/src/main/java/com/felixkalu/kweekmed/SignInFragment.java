@@ -12,37 +12,34 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment {
+public class SignInFragment extends Fragment {
 
 
-    public SettingsFragment() {
+    public SignInFragment() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        View v = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        TextView signInTextView = (TextView)v.findViewById(R.id.signInTextView);
-        signInTextView.setOnClickListener(new View.OnClickListener() {
+        TextView signUpTextView = (TextView)v.findViewById(R.id.signUpTextView);
+        signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SignInFragment signInFragment = new SignInFragment();
+                SignUpFragment signUpFragment = new SignUpFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Bundle args = new Bundle();
-                signInFragment.setArguments(args);
-                fragmentTransaction.replace(R.id.main_frame, signInFragment);
+                signUpFragment.setArguments(args);
+                fragmentTransaction.replace(R.id.main_frame, signUpFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
 
-
         return v;
-
     }
 
 }

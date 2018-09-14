@@ -35,11 +35,9 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
     private ProgressBar progressBar;
     private DoctorsAdapter doctorsAdapter;
 
-
     public FindDoctorFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,13 +71,25 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
 
                             String photoLink = doctor.get("photoLink").toString();
                             String name = doctor.get("name").toString();
+                            String surname = doctor.get("surname").toString();
+                            String sex = doctor.get("sex").toString();
+                            String age = doctor.get("age").toString();
                             String specialty = doctor.get("specialty").toString();
+                            String currentHospitalOfService = doctor.get("currentHospitalOfService").toString();
+                            String yearsOfExperience = doctor.get("yearsOfExperience").toString();
+                            String email = doctor.get("email").toString();
+                            String primaryMobileNumber = doctor.get("primaryMobileNumber").toString();
+                            String medicalCertificate = doctor.get("medicalCertificate").toString();
+                            String description = doctor.get("description").toString();
                             String location = doctor.get("location").toString();
                             //to get the book Id we use getObjectId. refer to parse documentation for android
                             String doctorId = doctor.getObjectId().toString();
 
                             Log.i("===BOOKID==== ", doctorId);
-                            doctorsList.add(new DoctorsModel(photoLink, name, specialty, location));
+
+                            doctorsList.add(new DoctorsModel(name, surname, sex, age, specialty, currentHospitalOfService,
+                                                yearsOfExperience,email,primaryMobileNumber,medicalCertificate,
+                                                photoLink,description,location,doctorId));
                         }
                     }
                 }
@@ -101,19 +111,25 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DoctorsDetailsFragment doctorsDetailsFragment = new DoctorsDetailsFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame, doctorsDetailsFragment);
                 Bundle args = new Bundle();
 
                 //for sending the content of the clicked listview to the next Fragment where it is displayed in detail.
+                args.putString("photoLink", doctorsList.get(position).getPhotoLink());
                 args.putString("name", doctorsList.get(position).getName());
                 args.putString("surname", doctorsList.get(position).getSurname());
+                args.putString("sex", doctorsList.get(position).getSex());
+                args.putString("age", doctorsList.get(position).getAge());
                 args.putString("specialty", doctorsList.get(position).getSpecialty());
-                args.putString("coverPictureLink", doctorsList.get(position).getPhotoLink());
+                args.putString("currentHospitalOfService", doctorsList.get(position).getCurrentHospitalOfService());
+                args.putString("yearsOfExperience", doctorsList.get(position).getYearsOfExperience());
+                args.putString("email", doctorsList.get(position).getEmail());
+                args.putString("primaryMobileNumber", doctorsList.get(position).getPrimaryMobileNumber());
+                args.putString("medicalCertificate", doctorsList.get(position).getMedicalCertificateLink());
+                args.putString("description", doctorsList.get(position).getDescription());
+                args.putString("location", doctorsList.get(position).getLocation());
                 //this line sends the book id that we would use to find all comments about  a particular book on the book details fragment
                 args.putString("doctorId", doctorsList.get(position).getId());
 
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
                 doctorsDetailsFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.main_frame, doctorsDetailsFragment);
                 fragmentTransaction.addToBackStack(null);
@@ -123,6 +139,7 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
 
         return v;
     }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -140,5 +157,4 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
         }
         return true;
     }
-
 }

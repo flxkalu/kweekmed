@@ -36,7 +36,7 @@
 
         <activity
             android:name=".PatientMapsActivity"
-            android:label="@string/title_activity_patient_maps"></activity>
+            android:label="@string/title_activity_patient_maps" />
     </application>
 
 </manifest>

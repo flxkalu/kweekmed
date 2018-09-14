@@ -48,8 +48,7 @@ public class DoctorsAdapter extends ArrayAdapter<DoctorsModel> {
         Log.i("name: ", currentDoctor.getName());
 
         TextView name = (TextView) listItem.findViewById(R.id.doctorNameTextView);
-        name.setText(currentDoctor.getName());
-
+        name.setText(currentDoctor.getName()+" "+currentDoctor.getSurname());
 
 
         TextView specialty = (TextView) listItem.findViewById(R.id.doctorSpecialtyTextView);

@@ -6,17 +6,24 @@ import java.util.Date;
 
 public class DoctorsModel {
 
-    private String name, surname, age,sex, specialty, currentHospitalOfService,
-            yearsOfExperience, email, primaryMobileNumber, photoLink, id, location;
+    private String name, surname, sex, age, specialty, currentHospitalOfService,
+            yearsOfExperience, email, primaryMobileNumber, medicalCertificateLink, photoLink, description, location, id  ;
 
-    public DoctorsModel(String photoLink,String name, String specialty, String location) {
-
-        this.photoLink = photoLink;
+    public DoctorsModel(String name, String surname, String sex, String age, String specialty, String currentHospitalOfService, String yearsOfExperience, String email, String primaryMobileNumber, String medicalCertificateLink, String photoLink, String description, String location, String id) {
         this.name = name;
+        this.surname = surname;
+        this.sex = sex;
+        this.age = age;
         this.specialty = specialty;
+        this.currentHospitalOfService = currentHospitalOfService;
+        this.yearsOfExperience = yearsOfExperience;
+        this.email = email;
+        this.primaryMobileNumber = primaryMobileNumber;
+        this.medicalCertificateLink = medicalCertificateLink;
+        this.photoLink = photoLink;
+        this.description = description;
         this.location = location;
-
-
+        this.id = id;
     }
 
     public String getName() {
@@ -115,4 +122,21 @@ public class DoctorsModel {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMedicalCertificateLink() {
+        return medicalCertificateLink;
+    }
+
+    public void setMedicalCertificateLink(String medicalCertificateLink) {
+        this.medicalCertificateLink = medicalCertificateLink;
+    }
+
 }
