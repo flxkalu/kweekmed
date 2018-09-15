@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="0dp"
-        android:layout_height="106dp"
+        android:layout_height="207dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -22,60 +22,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView39"
+
+    <EditText
+        android:id="@+id/loginUserNameEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="UserName Or Email:"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/textView40"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="136dp"
-        android:layout_marginRight="136dp"
-        android:layout_marginTop="8dp"
-        android:text="username"
+        android:hint="Enter Username"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    <TextView
-        android:id="@+id/textView41"
+
+    <EditText
+        android:id="@+id/loginUserPasswordEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Password:"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView39" />
-
-    <TextView
-        android:id="@+id/textView42"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="208dp"
-        android:layout_marginRight="208dp"
-        android:layout_marginTop="8dp"
-        android:text="password"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView40" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginUserNameEditText" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/signInButton"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
@@ -86,10 +69,10 @@
         android:text="Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView42" />
+        app:layout_constraintTop_toBottomOf="@+id/loginUserPasswordEditText" />
 
     <TextView
-        android:id="@+id/textView43"
+        android:id="@+id/forgotPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -100,7 +83,7 @@
         android:text="Forgot Password?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
 
     <TextView
         android:id="@+id/signUpTextView"
@@ -114,6 +97,6 @@
         android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView43" />
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView" />
 
 </android.support.constraint.ConstraintLayout>
