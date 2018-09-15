@@ -109,10 +109,12 @@ public class SignUpFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View v) {
 
-                if (!userUsernameTextView.getText().toString().matches("")
+                //checks that all forms are properly filled before signUpButton action happens
+                if (!(userUsernameTextView.getText().toString().matches("")
+                        || mobileNumberTextView.getText().toString().matches("")
                         || userEmailTextView.getText().toString().matches("")
                         || userPasswordTextView.getText().toString().matches("")
-                        || userPasswordConfirmTextView.getText().toString().matches("")) {
+                        || userPasswordConfirmTextView.getText().toString().matches(""))) {
                     if (userPasswordTextView.getText().toString().matches(userPasswordConfirmTextView.getText().toString())) {
                         if (switch2.isChecked()) {
                             saveDoctorsDetails(userUsernameTextView.getText().toString(), userEmailTextView.getText().toString(), userPasswordTextView.getText().toString(), mobileNumberTextView.getText().toString());
