@@ -2,54 +2,58 @@ package com.felixkalu.kweekmed;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Intent intent;
 
-    LocationManager locationManager;
-    LocationListener locationListener;
+    public void navigateToDoctor(View view) {
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        double deviceLocationLatitude = intent.getDoubleExtra("deviceLocationLatitude", 0);
+        double deviceLocationLongitude = intent.getDoubleExtra("deviceLocationLongitude", 0);
+        double doctorsLocationLatitude = intent.getDoubleExtra("doctorsLatitude", 0);
+        double doctorsLocationLongitude = intent.getDoubleExtra("doctorsLongitude", 0);
 
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-
-                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                updateMap(lastKnownLocation);
-
-            }
-        }
-    }
-
-    public void updateMap(Location location) {
-        LatLng userLocation = new LatLng(location.getLongitude(), location.getLatitude());
-
-        mMap.clear();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,5 ));
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("You Are Here!"));
+        Intent directionsIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?saddr=" + deviceLocationLatitude + "," + deviceLocationLongitude + "&daddr=" + doctorsLocationLatitude + "," + doctorsLocationLongitude));
+        startActivity(directionsIntent);
     }
 
     @Override
@@ -57,12 +61,12 @@ public class PatientMapsActivity extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -76,48 +80,35 @@ public class PatientMapsActivity extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+        intent = getIntent();
+
+        RelativeLayout mapLayout = (RelativeLayout)findViewById(R.id.mapRelativeLayout);
+        mapLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onLocationChanged(Location location) {
+            public void onGlobalLayout() {
 
-               updateMap(location);
-            }
+                LatLng doctorsLocation = new LatLng(intent.getDoubleExtra("doctorsLatitude", 0), intent.getDoubleExtra("doctorsLongitude", 0));
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+                LatLng deviceLocation = new LatLng(intent.getDoubleExtra("deviceLocationLatitude", 0), intent.getDoubleExtra("deviceLocationLongitude", 0));
 
-            }
+                ArrayList<Marker> markers = new ArrayList<>();
 
-            @Override
-            public void onProviderEnabled(String provider) {
+                markers.add(mMap.addMarker(new MarkerOptions().position(deviceLocation).title("Your Location")));
+                markers.add(mMap.addMarker(new MarkerOptions().position(doctorsLocation).title("Doctors Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
 
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        if (Build.VERSION.SDK_INT < 23) {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            }
-
-        } else {
-
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            } else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                if(lastKnownLocation != null) {
-                    updateMap(lastKnownLocation);
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (Marker marker : markers) {
+                    builder.include(marker.getPosition());
                 }
+                LatLngBounds bounds = builder.build();
+
+                int padding = 60; // offset from edges of the map in pixels
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+                mMap.animateCamera(cu);
 
             }
-        }
+        });
+
     }
 }

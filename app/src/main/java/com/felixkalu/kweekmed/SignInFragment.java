@@ -50,6 +50,7 @@ public class SignInFragment extends Fragment {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
                                     Toast.makeText(getActivity(), "You have Signed in", Toast.LENGTH_LONG).show();
+                                    //redirect to the next fragment after.
                                 } else {
                                     Toast.makeText(getActivity(), "Error Signing in", Toast.LENGTH_LONG).show();
                                 }

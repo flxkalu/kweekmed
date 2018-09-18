@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.ParseGeoPoint;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class DoctorsAdapter extends ArrayAdapter<DoctorsModel> {
         DoctorsModel currentDoctor = doctorsList.get(position);
 
         ImageView image = (ImageView)listItem.findViewById(R.id.doctorImageView);
-        Picasso.get().load(currentDoctor.getPhotoLink()).resize(100, 85).into(image);
+        Picasso.get().load(currentDoctor.getPhotoLink()).resize(80, 80).into(image);
 
         Log.i("Img link", currentDoctor.getPhotoLink());
         Log.i("name: ", currentDoctor.getName());

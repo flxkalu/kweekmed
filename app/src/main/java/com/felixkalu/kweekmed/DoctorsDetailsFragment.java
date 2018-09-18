@@ -1,8 +1,7 @@
 package com.felixkalu.kweekmed;
 
 import android.content.Intent;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -29,8 +28,6 @@ public class DoctorsDetailsFragment extends Fragment {
     //simple animation for the callnowbutton and locationbutton.
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -44,7 +41,6 @@ public class DoctorsDetailsFragment extends Fragment {
         TextView experienceTextView = (TextView)v.findViewById(R.id.doctorsDetailsExperienceTextView);
         TextView descriptionTextView = (TextView)v.findViewById(R.id.doctorsDetailsDescriptionTextView);
 
-
         String name = getArguments().getString("name");
         String surname = getArguments().getString("surname");
         String sex = getArguments().getString("sex");
@@ -53,17 +49,24 @@ public class DoctorsDetailsFragment extends Fragment {
         String currentHospitalOfService = getArguments().getString("currentHospitalOfService");
         String yearsOfExperience = getArguments().getString("yearsOfExperience");
         String email = getArguments().getString("email");
-        String primaryMobileNumber = getArguments().getString("primaryMobileNumber");
+        final String primaryMobileNumber = getArguments().getString("primaryMobileNumber");
         String medicalCertificate = getArguments().getString("medicalCertificate");
         String photoLink = getArguments().getString("photoLink");
         String description = getArguments().getString("description");
-        String location = getArguments().getString("location");
+        final Double doctorsLatitude = getArguments().getDouble("doctorsLatitude");
+        final Double doctorsLongitude = getArguments().getDouble("doctorsLongitude");
+        final Double deviceLocationLatitude = getArguments().getDouble("deviceLocationLatitude");
+        final Double deviceLocationLongitude = getArguments().getDouble("deviceLocationLongitude");
+
+        Log.i("doctorsLatitude",doctorsLatitude.toString() + "from details fragment");
+        Log.i("doctorsLongitude",doctorsLongitude.toString()+ "from details fragment");
+        Log.i("deviceLocationLatitude",deviceLocationLatitude.toString()+ "from details fragment");
+        Log.i("deviceLocationLongitude",deviceLocationLongitude.toString()+ "from details fragment");
+
         String doctorId = getArguments().getString("doctorId");
 
-        Log.i("LINK: ", location);
-
         Picasso.get().load(photoLink).resize(154, 154).into(doctorPicture);
-        nameTextView.setText(Html.fromHtml("<b>Full Name:</b><i> "+name + " " + surname));
+        nameTextView.setText(Html.fromHtml("<b>Full Name:</b><i> "+name + " " + surname ));
         specialtyTextView.setText(Html.fromHtml("<b>Specialty:</b><i> " + specialty));
         experienceTextView.setText(Html.fromHtml("<b>Years Of Experience:</b><i> " + yearsOfExperience));
         descriptionTextView.setText(Html.fromHtml("<b>Admin's Comment:</b><i> " + description));
@@ -72,6 +75,9 @@ public class DoctorsDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 v.startAnimation(buttonClick);
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:"+primaryMobileNumber));
+                startActivity(callIntent);
             }
         });
 
@@ -81,6 +87,10 @@ public class DoctorsDetailsFragment extends Fragment {
                 v.startAnimation(buttonClick);
 
                 Intent intent = new Intent(getActivity(), PatientMapsActivity.class);
+                intent.putExtra("doctorsLatitude", doctorsLatitude);
+                intent.putExtra("doctorsLongitude", doctorsLongitude);
+                intent.putExtra("deviceLocationLatitude", deviceLocationLatitude );
+                intent.putExtra("deviceLocationLongitude", deviceLocationLongitude );
                 startActivity(intent);
             }
         });

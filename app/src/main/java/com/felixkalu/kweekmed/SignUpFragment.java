@@ -186,6 +186,7 @@ public class SignUpFragment extends Fragment implements LocationListener {
                 public void done(ParseException e) {
                     if (e == null) {
                         Toast.makeText(getActivity(), "Doctor Account Created", Toast.LENGTH_LONG).show();
+                        //redirect to the next fragment.
                     } else {
                         Toast.makeText(getActivity(), "Error Occured "+e.getMessage(), Toast.LENGTH_LONG).show();
                     }
