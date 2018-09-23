@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class SymptomsCheckerFragment extends Fragment {
 
+
     public SymptomsCheckerFragment() {
         // Required empty public constructor
     }
@@ -38,11 +39,16 @@ public class SymptomsCheckerFragment extends Fragment {
     private ListView listView;
     private ProgressBar progressBar;
 
+
+    String token = HomeFragment.token;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_symptoms_checker, container, false);
         getActivity().setTitle("Enter Symptoms?");
+
+        //CheckRequiredArgs(userName, password, authUrl, healthUrl, language);
 
         //continue button and what it should do when clicked
         Button continueButton = (Button)v.findViewById(R.id.buttonContinue);
@@ -61,12 +67,15 @@ public class SymptomsCheckerFragment extends Fragment {
         progressBar = (ProgressBar) v.findViewById(R.id.progress_loader);
         listView = (ListView) v.findViewById(R.id.listview);
 
+        String url = "https://sandbox-healthservice.priaid.ch/symptoms?token=";
+        String language = "&format=json&language=en-gb";
+
         DownloadTask task = new DownloadTask();
-        task.execute("https://sandbox-healthservice.priaid.ch/symptoms?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZseGthbHVAaG90bWFpbC5jby51ayIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMzc5NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAxOC0wOS0wNSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTM2NjY5NzE2LCJuYmYiOjE1MzY2NjI1MTZ9.x9ZCEwe3_5Ab2Y21rCi6RVZNMgLfVOJ8OtLZl0u6OT4&format=json&language=en-gb");
-        //get symptoms from api and add them all into the the arraylist
+        task.execute(url.concat(token).concat(language));
 
         return v;
     }
+
 
     //this code block takes care of retrieving everything from the api
     public class DownloadTask extends AsyncTask<String, Void, String> {
@@ -149,7 +158,6 @@ public class SymptomsCheckerFragment extends Fragment {
                         }
 
                         symptoms.set(i, model);
-
                         adapter.updateRecords(symptoms);
                     }
                 });
