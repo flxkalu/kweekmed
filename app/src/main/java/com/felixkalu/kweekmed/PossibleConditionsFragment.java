@@ -23,8 +23,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 
 
 /**
@@ -108,7 +117,7 @@ public class PossibleConditionsFragment extends Fragment {
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
             } catch (Exception e) {
-                Toast.makeText(getActivity().getApplicationContext(), "Could Not Find anything", Toast.LENGTH_LONG);
+                Log.i("Exception From PCF", e.getMessage());
             }
 
             return null;
@@ -183,10 +192,11 @@ public class PossibleConditionsFragment extends Fragment {
         }
 
         if(ids.endsWith(",")) {
-            ids = ids.substring(0, ids.length() - 1) + ' ';
+            ids = ids.substring(0, ids.length() - 1) + "";
         }
         Log.i("ID after work", ids);
 
         return ids;
     }
+
 }

@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment {
 
             try {
 
-                url = new URL("https://sandbox-authservice.priaid.ch/login");
+                url = new URL(authUrl);
 
                 myURLConnection = (HttpURLConnection) url.openConnection();
                 myURLConnection.setRequestMethod("POST");
@@ -179,9 +179,9 @@ public class HomeFragment extends Fragment {
                 return result;
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Log.i("MalformedURLException ", e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.i("IOException ", e.getMessage());
             }
 
             return null;
@@ -192,19 +192,16 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            String newstring = result.replace("null", "");
             try {
+                String newstring = result.replace("null", "");
                 JSONObject jsonObject = new JSONObject(newstring);
                 token = jsonObject.getString("Token");
                 Log.i("Token ", token);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.i("Exception ", e.getMessage());
             }
 
         }
     }
 
-    public String getToken() {
-        return token;
-    }
 }

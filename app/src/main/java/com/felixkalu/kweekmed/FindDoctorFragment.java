@@ -57,6 +57,7 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+                    deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 }
             }
         }
@@ -82,9 +83,9 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+            deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
         //make sure that the location of the device is set before doing other things

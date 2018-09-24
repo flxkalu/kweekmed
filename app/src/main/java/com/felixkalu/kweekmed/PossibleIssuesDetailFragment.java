@@ -43,6 +43,7 @@ public class PossibleIssuesDetailFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_possible_issues_detail, container, false);
 
+
         descriptionTextView = (TextView)v.findViewById(R.id.doctorsDetailsDescriptionTextView);
         medicalConditiontextView = (TextView)v.findViewById(R.id.medicalConditiontextView);
         nameTextview = (TextView)v.findViewById(R.id.nameTextview);
@@ -51,12 +52,17 @@ public class PossibleIssuesDetailFragment extends Fragment {
         synonymsTextView = (TextView)v.findViewById(R.id.synonymsTextView);
         treatmentDescriptionTextView = (TextView)v.findViewById(R.id.treatmentDescriptionTextView);
 
+        String url = "https://sandbox-healthservice.priaid.ch/issues/";
+        String language = "&format=json&language=en-gb";
+        String token = HomeFragment.token;
+        String issueId = getArguments().getString("issueId");
 
         possibleIssueId = getArguments().getString("issueId");
-        Log.i("IssueId: ", possibleIssueId);
+        Log.i("Complete URL: ", url+issueId+"/info?token="+token+language);
 
         DownloadTask task = new DownloadTask();
-        task.execute("https://sandbox-healthservice.priaid.ch/issues/11/info?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZseGthbHVAaG90bWFpbC5jby51ayIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMzc5NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAxOC0wOS0wNSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTM2NjY5Njc0LCJuYmYiOjE1MzY2NjI0NzR9.TQQ9lRQ39Cx96rqqAy5h_NgyVz0XefhxlGnrNbPJ0HU&format=json&language=en-gb");
+        task.execute(url+issueId+"/info?token="+token+language);
+        //task.execute("https://sandbox-healthservice.priaid.ch/issues/11/info?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImZseGthbHVAaG90bWFpbC5jby51ayIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMzc5NSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAxOC0wOS0wNSIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTM2NjY5Njc0LCJuYmYiOjE1MzY2NjI0NzR9.TQQ9lRQ39Cx96rqqAy5h_NgyVz0XefhxlGnrNbPJ0HU&format=json&language=en-gb");
 
         return v;
     }
