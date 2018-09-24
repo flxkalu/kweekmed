@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -31,7 +30,6 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 
 /**
@@ -93,7 +91,7 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
         setDeviceCurrentLocation();
 
         //searchView and the clickListener
-        SearchView searchView = (SearchView) v.findViewById(R.id.searchView1);
+        SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
         searchView.setOnQueryTextListener(this);
 
         //setting up the query we need to search the parse server

@@ -6,14 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SymptomsAdapter extends BaseAdapter{
 
     Activity activity;
     List<SymptomModel> symptoms;
+    List<SymptomModel> symptomsCopy;
     LayoutInflater inflater;
 
     public SymptomsAdapter(Activity activity) {
@@ -23,6 +27,8 @@ public class SymptomsAdapter extends BaseAdapter{
     public SymptomsAdapter(Activity activity, List<SymptomModel> symptoms) {
         this.activity = activity;
         this.symptoms = symptoms;
+        this.symptomsCopy = new ArrayList<SymptomModel>();
+        this.symptomsCopy.addAll(symptoms);
 
         inflater = activity.getLayoutInflater();
     }
@@ -83,5 +89,22 @@ public class SymptomsAdapter extends BaseAdapter{
 
         TextView tvUserName;
         ImageView ivCheckBox;
+    }
+
+    public void filter(String charText){
+        charText = charText.toLowerCase(Locale.getDefault());
+        symptoms.clear();
+        if (charText.length()==0){
+            symptoms.addAll(symptomsCopy);
+        }
+        else {
+            for (SymptomModel symptom : symptomsCopy){
+                //This tells the searchView to search with book title or book Author
+                if (symptom.getName().toLowerCase(Locale.getDefault()).contains(charText)){
+                    symptoms.add(symptom);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

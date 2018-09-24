@@ -1,8 +1,6 @@
 package com.felixkalu.kweekmed;
 
 
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,7 +68,7 @@ public class HomeFragment extends Fragment {
         ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
         ImageView findaDoctorImageView = (ImageView) v.findViewById(R.id.findaDoctorImageView);
 
-        SearchView searchView = (SearchView) v.findViewById(R.id.searchView1);
+        SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
 
         //searchview icon click listener
        searchView.setOnSearchClickListener(new View.OnClickListener() {

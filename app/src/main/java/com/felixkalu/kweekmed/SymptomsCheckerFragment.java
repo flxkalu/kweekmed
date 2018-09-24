@@ -4,6 +4,7 @@ package com.felixkalu.kweekmed;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,16 +31,19 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SymptomsCheckerFragment extends Fragment {
-
+public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQueryTextListener{
 
     public SymptomsCheckerFragment() {
         // Required empty public constructor
     }
 
+    ArrayList<String> symptomNames = new ArrayList<String>();
+    ArrayList<String> symptomIds = new ArrayList<String>();
+
+    private SymptomsAdapter adapter;
+
     private ListView listView;
     private ProgressBar progressBar;
-
 
     String token = HomeFragment.token;
 
@@ -48,7 +53,11 @@ public class SymptomsCheckerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_symptoms_checker, container, false);
         getActivity().setTitle("Enter Symptoms?");
 
-        //CheckRequiredArgs(userName, password, authUrl, healthUrl, language);
+        SearchView symptomsSearchView = (SearchView)v.findViewById(R.id.symptomsSearchView);
+        symptomsSearchView.setOnQueryTextListener(this);
+
+        symptomIds.clear();
+        symptomNames.clear();
 
         //continue button and what it should do when clicked
         Button continueButton = (Button)v.findViewById(R.id.buttonContinue);
@@ -57,6 +66,17 @@ public class SymptomsCheckerFragment extends Fragment {
             public void onClick(View v) {
                 PossibleConditionsFragment possibleConditionsFragment = new PossibleConditionsFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle args = new Bundle();
+
+                String age = getArguments().getString("age");
+                String gender = getArguments().getString("gender");
+
+                args.putString("age", age);
+                args.putString("gender", gender);
+                args.putStringArrayList("symptomIds", symptomIds);
+                args.putStringArrayList("symptomNames", symptomNames);
+
+                possibleConditionsFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.main_frame, possibleConditionsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -70,10 +90,30 @@ public class SymptomsCheckerFragment extends Fragment {
         String url = "https://sandbox-healthservice.priaid.ch/symptoms?token=";
         String language = "&format=json&language=en-gb";
 
+        Log.i("Token from SCF:", token);
+
         DownloadTask task = new DownloadTask();
         task.execute(url.concat(token).concat(language));
+        //get symptoms from api and add them all into the the arraylist
 
         return v;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String newText) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.i("SEARCHVIEW: ", newText.toString());
+        if (TextUtils.isEmpty(newText)) {
+            adapter.filter("");
+            listView.clearTextFilter();
+        } else {
+            adapter.filter(newText);
+        }
+        return true;
     }
 
 
@@ -140,7 +180,7 @@ public class SymptomsCheckerFragment extends Fragment {
                 }
                 progressBar.setVisibility(View.GONE);
 
-                final SymptomsAdapter adapter = new SymptomsAdapter(getActivity(), symptoms);
+                adapter = new SymptomsAdapter(getActivity(), symptoms);
                 listView.setAdapter(adapter);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,9 +191,13 @@ public class SymptomsCheckerFragment extends Fragment {
 
                         if(model.isSelected()) {
                             model.setSelected(false);
+                            symptomIds.remove(i);
+                            symptomNames.remove(i);
                             Log.i("you removed", model.getName());
                         } else {
                             model.setSelected(true);
+                            symptomIds.add(model.getSymptomId());
+                            symptomNames.add(model.getName());
                             Log.i("you Added", model.getName());
                         }
 
@@ -167,4 +211,5 @@ public class SymptomsCheckerFragment extends Fragment {
             }
         }
     }
+
 }
