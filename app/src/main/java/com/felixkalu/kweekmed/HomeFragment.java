@@ -1,6 +1,7 @@
 package com.felixkalu.kweekmed;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
+
+import com.felixkalu.simplealarms.ui.MainFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +70,7 @@ public class HomeFragment extends Fragment {
         ImageView symptomsCheckerImageView = (ImageView)v.findViewById(R.id.symptomsCheckerImageView);
         ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
         ImageView findaDoctorImageView = (ImageView) v.findViewById(R.id.findaDoctorImageView);
+        ImageView medicationReminderImageView =(ImageView)v.findViewById(R.id.medicationReminderImageView);
 
         SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
 
@@ -79,7 +83,7 @@ public class HomeFragment extends Fragment {
            }
        });
 
-       //symptomschecker link
+       //symptomsChecker Link
         symptomsCheckerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +120,18 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+        medicationReminderImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainFragment alarmFragment = new MainFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, alarmFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
         return v;
     }
 
@@ -143,7 +159,6 @@ public class HomeFragment extends Fragment {
             DownloadTask task = new DownloadTask();
             task.execute();
         }
-
     }
 
     class DownloadTask extends AsyncTask<String, Void, String> {
@@ -187,7 +202,7 @@ public class HomeFragment extends Fragment {
             return null;
         }
 
-        //this method function is called when the doingInbackground method is completed and it would pass whatever we return from the doInBackground method, in this case, the result variable.
+        //this method function is called when the doingInBackground method is completed and it would pass whatever we return from the doInBackground method, in this case, the result variable.
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);

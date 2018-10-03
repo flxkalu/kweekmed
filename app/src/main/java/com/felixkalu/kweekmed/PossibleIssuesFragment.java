@@ -32,14 +32,12 @@ import java.util.ArrayList;
  */
 public class PossibleIssuesFragment extends Fragment {
 
-
     ListView possibleIssuesListView;
     ProgressBar progressBar;
 
     public PossibleIssuesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +93,6 @@ public class PossibleIssuesFragment extends Fragment {
             } catch (Exception e) {
                 Toast.makeText(getActivity().getApplicationContext(), "Could Not Find anything", Toast.LENGTH_LONG);
             }
-
             return null;
         }
 

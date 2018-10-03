@@ -187,22 +187,27 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                        Log.i("index", Integer.toString(i));
+
                         SymptomModel model = symptoms.get(i);
-
-                        if(model.isSelected()) {
-                            model.setSelected(false);
-                            symptomIds.remove(i);
-                            symptomNames.remove(i);
-                            Log.i("you removed", model.getName());
-                        } else {
-                            model.setSelected(true);
-                            symptomIds.add(model.getSymptomId());
-                            symptomNames.add(model.getName());
-                            Log.i("you Added", model.getName());
+                        try {
+                            if (model.isSelected()) {
+                                model.setSelected(false);
+                                symptomIds.remove(model.getSymptomId());
+                                symptomNames.remove(model.getName());
+                                Log.i("you removed", model.getName());
+                            } else {
+                                model.setSelected(true);
+                                symptomIds.add(model.getSymptomId());
+                                symptomNames.add(model.getName());
+                                Log.i("you Added", model.getName());
+                            }
+                        } catch (Exception e) {
+                            Log.i("Exception ", e.getMessage());
+                        } finally {
+                            symptoms.set(i, model);
+                            adapter.updateRecords(symptoms);
                         }
-
-                        symptoms.set(i, model);
-                        adapter.updateRecords(symptoms);
                     }
                 });
 

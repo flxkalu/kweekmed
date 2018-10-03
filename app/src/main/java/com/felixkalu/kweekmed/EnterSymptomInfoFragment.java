@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -23,7 +25,6 @@ public class EnterSymptomInfoFragment extends Fragment {
     }
     String gender = "male";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -36,18 +37,22 @@ public class EnterSymptomInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                SymptomsCheckerFragment symptomsCheckerFragment = new SymptomsCheckerFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                if (!(ageEditText.getText().toString().matches(""))) {
+                    SymptomsCheckerFragment symptomsCheckerFragment = new SymptomsCheckerFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                //to send the age, gender, and sex
-                Bundle args = new Bundle();
-                args.putString("age", ageEditText.getText().toString());
-                args.putString("gender", gender);
+                    //to send the age, gender, and sex
+                    Bundle args = new Bundle();
+                    args.putString("age", ageEditText.getText().toString());
+                    args.putString("gender", gender);
 
-                symptomsCheckerFragment.setArguments(args);
-                fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                    symptomsCheckerFragment.setArguments(args);
+                    fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Please Enter Your Age", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -62,8 +67,6 @@ public class EnterSymptomInfoFragment extends Fragment {
                 }
             }
         });
-
-
         return v;
     }
 

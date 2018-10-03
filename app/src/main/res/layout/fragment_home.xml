@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -84,11 +83,11 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/doctor"
             app:layout_constraintEnd_toStartOf="@+id/imageView24"
-            app:layout_constraintStart_toEndOf="@+id/imageView22"
+            app:layout_constraintStart_toEndOf="@+id/medicationReminderImageView"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <ImageView
-            android:id="@+id/imageView22"
+            android:id="@+id/medicationReminderImageView"
             android:layout_width="110dp"
             android:layout_height="90dp"
             android:layout_marginLeft="8dp"
@@ -129,13 +128,13 @@
             android:id="@+id/textView9"
             android:layout_width="110dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:gravity="center"
-            android:text="Pill Identifier"
+            android:text="Medication Reminders"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView22" />
+            app:layout_constraintTop_toBottomOf="@+id/medicationReminderImageView" />
 
         <ImageView
             android:id="@+id/imageView23"

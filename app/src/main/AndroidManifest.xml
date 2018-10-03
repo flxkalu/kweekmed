@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".StarterApplication"
@@ -17,15 +16,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"
+                <action
+                    android:name="android.intent.action.MAIN"
                     android:allowBackup="true" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.felixkalu.simplealarms.ui.AddEditAlarmActivity" />
+
+        <activity
+            android:name="com.felixkalu.simplealarms.ui.AlarmLandingPageActivity"
+            android:theme="@style/AlertLandingPageTheme" />
+
+        <service android:name="com.felixkalu.simplealarms.service.LoadAlarmsService" />
+
+        <receiver android:name="com.felixkalu.simplealarms.service.LoadAlarmsReceiver" />
+
+        <receiver android:name="com.felixkalu.simplealarms.service.AlarmReceiver" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
