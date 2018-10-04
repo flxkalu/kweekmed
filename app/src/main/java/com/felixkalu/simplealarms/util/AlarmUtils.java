@@ -19,6 +19,7 @@ import java.util.Locale;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_FRI;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_IS_ENABLED;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_LABEL;
+import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_DOSAGE;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_MON;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_SAT;
 import static com.felixkalu.simplealarms.data.DatabaseHelper.COL_SUN;
@@ -69,6 +70,7 @@ public final class AlarmUtils {
 
         cv.put(COL_TIME, alarm.getTime());
         cv.put(COL_LABEL, alarm.getLabel());
+        cv.put(COL_DOSAGE, alarm.getDosage());
 
         final SparseBooleanArray days = alarm.getDays();
         cv.put(COL_MON, days.get(Alarm.MON) ? 1 : 0);
@@ -99,6 +101,7 @@ public final class AlarmUtils {
                 final long id = c.getLong(c.getColumnIndex(_ID));
                 final long time = c.getLong(c.getColumnIndex(COL_TIME));
                 final String label = c.getString(c.getColumnIndex(COL_LABEL));
+                final String dosage = c.getString(c.getColumnIndex(COL_DOSAGE));
                 final boolean mon = c.getInt(c.getColumnIndex(COL_MON)) == 1;
                 final boolean tues = c.getInt(c.getColumnIndex(COL_TUES)) == 1;
                 final boolean wed = c.getInt(c.getColumnIndex(COL_WED)) == 1;
@@ -108,7 +111,7 @@ public final class AlarmUtils {
                 final boolean sun = c.getInt(c.getColumnIndex(COL_SUN)) == 1;
                 final boolean isEnabled = c.getInt(c.getColumnIndex(COL_IS_ENABLED)) == 1;
 
-                final Alarm alarm = new Alarm(id, time, label);
+                final Alarm alarm = new Alarm(id, time, label, dosage);
                 alarm.setDay(Alarm.MON, mon);
                 alarm.setDay(Alarm.TUES, tues);
                 alarm.setDay(Alarm.WED, wed);
@@ -147,9 +150,7 @@ public final class AlarmUtils {
             isActive = days.valueAt(count);
             count++;
         }
-
         return isActive;
-
     }
 
     public static int getNotificationId(Alarm alarm) {
@@ -172,9 +173,6 @@ public final class AlarmUtils {
         if(builder.substring(builder.length()-2).equals(", ")) {
             builder.replace(builder.length()-2,builder.length(),".");
         }
-
         return builder.toString();
-
     }
-
 }

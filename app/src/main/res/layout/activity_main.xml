@@ -15,7 +15,8 @@
         app:itemIconTint="@color/color"
         app:itemTextColor="@color/color"
         app:menu="@menu/nav_items"
-        android:layout_alignParentLeft="true"></android.support.design.widget.BottomNavigationView>
+        android:layout_alignParentLeft="true">
+    </android.support.design.widget.BottomNavigationView>
 
     <FrameLayout
         android:id="@+id/main_frame"

@@ -62,7 +62,13 @@
             android:id="@+id/ar_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Get Up"/>
+            tools:text="Medication"/>
+
+        <TextView
+            android:id="@+id/ar_dosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Dosage"/>
 
         <TextView
             android:id="@+id/ar_days"

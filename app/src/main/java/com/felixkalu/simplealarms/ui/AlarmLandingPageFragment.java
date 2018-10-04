@@ -41,6 +41,5 @@ public final class AlarmLandingPageFragment extends Fragment implements View.OnC
                 getActivity().finish();
                 break;
         }
-
     }
 }

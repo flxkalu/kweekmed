@@ -6,7 +6,6 @@ import android.content.Intent;
 
 
 import com.felixkalu.simplealarms.model.Alarm;
-
 import java.util.ArrayList;
 
 public final class LoadAlarmsReceiver extends BroadcastReceiver {

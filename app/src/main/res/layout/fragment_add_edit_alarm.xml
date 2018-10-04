@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginBottom="8dp"
-            android:text="@string/time"
+            android:text="Select Time"
             tools:text="Time"/>
 
         <View
@@ -40,19 +40,22 @@
             android:timePickerMode="spinner"
             tools:targetApi="lollipop" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginBottom="8dp"
-            android:text="@string/label"
-            tools:text="Label"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/divider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="8dp"
+            android:text="Select Medication"
+            tools:text="Medication"/>
+
+
 
         <EditText
             android:id="@+id/edit_alarm_label"
@@ -62,8 +65,38 @@
             android:maxLength="15"
             android:textColor="@color/secondary_text"
             android:textStyle="italic"
-            android:hint="@string/add_label_hint"
+            android:hint="Select Medication"
             android:layout_marginBottom="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/divider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="8dp"
+            android:text="Select Dosage"
+            tools:text="Dosage"/>
+
+        <EditText
+            android:id="@+id/edit_alarm_dosage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:maxLength="15"
+            android:textColor="@color/secondary_text"
+            android:textStyle="italic"
+            android:hint="Indicate Dosage"
+            android:layout_marginBottom="16dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/divider" />
 
         <TextView
             android:layout_width="match_parent"
@@ -71,7 +104,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginBottom="8dp"
             android:text="@string/days"
-            tools:text="Days"/>
+            tools:text="Select Days For Medication"/>
 
         <View
             android:layout_width="match_parent"

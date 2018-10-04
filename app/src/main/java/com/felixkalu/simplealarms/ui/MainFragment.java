@@ -63,9 +63,7 @@ public final class MainFragment extends Fragment
                 startActivity(i);
             }
         });
-
         return v;
-
     }
 
     @Override
@@ -86,5 +84,4 @@ public final class MainFragment extends Fragment
     public void onAlarmsLoaded(ArrayList<Alarm> alarms) {
         mAdapter.setAlarms(alarms);
     }
-
 }

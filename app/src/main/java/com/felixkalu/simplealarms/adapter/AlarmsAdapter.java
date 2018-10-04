@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.felixkalu.kweekmed.R;
 import com.felixkalu.simplealarms.model.Alarm;
 import com.felixkalu.simplealarms.ui.AddEditAlarmActivity;
@@ -54,6 +53,7 @@ public final class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.View
         holder.time.setText(AlarmUtils.getReadableTime(alarm.getTime()));
         holder.amPm.setText(AlarmUtils.getAmPm(alarm.getTime()));
         holder.label.setText(alarm.getLabel());
+        holder.dosage.setText(alarm.getDosage());
         holder.days.setText(buildSelectedDays(alarm));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +111,7 @@ public final class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.View
 
     static final class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView time, amPm, label, days;
+        TextView time, amPm, label, dosage, days;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -119,9 +119,8 @@ public final class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.View
             time = (TextView) itemView.findViewById(R.id.ar_time);
             amPm = (TextView) itemView.findViewById(R.id.ar_am_pm);
             label = (TextView) itemView.findViewById(R.id.ar_label);
+            dosage =(TextView) itemView.findViewById(R.id.ar_dosage);
             days = (TextView) itemView.findViewById(R.id.ar_days);
-
         }
     }
-
 }

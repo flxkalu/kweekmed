@@ -29,6 +29,7 @@ public final class AddEditAlarmFragment extends Fragment {
 
     private TimePicker mTimePicker;
     private EditText mLabel;
+    private EditText mDosage;
     private CheckBox mMon, mTues, mWed, mThurs, mFri, mSat, mSun;
 
     public static AddEditAlarmFragment newInstance(Alarm alarm) {
@@ -55,7 +56,9 @@ public final class AddEditAlarmFragment extends Fragment {
         ViewUtils.setTimePickerTime(mTimePicker, alarm.getTime());
 
         mLabel = (EditText) v.findViewById(R.id.edit_alarm_label);
+        mDosage = (EditText)v.findViewById(R.id.edit_alarm_dosage) ;
         mLabel.setText(alarm.getLabel());
+        mDosage.setText(alarm.getDosage());
 
         mMon = (CheckBox) v.findViewById(R.id.edit_alarm_mon);
         mTues = (CheckBox) v.findViewById(R.id.edit_alarm_tues);
@@ -113,6 +116,7 @@ public final class AddEditAlarmFragment extends Fragment {
         alarm.setTime(time.getTimeInMillis());
 
         alarm.setLabel(mLabel.getText().toString());
+        alarm.setDosage(mDosage.getText().toString());
 
         alarm.setDay(Alarm.MON, mMon.isChecked());
         alarm.setDay(Alarm.TUES, mTues.isChecked());
@@ -163,7 +167,5 @@ public final class AddEditAlarmFragment extends Fragment {
         });
         builder.setNegativeButton(R.string.no, null);
         builder.show();
-
     }
-
 }

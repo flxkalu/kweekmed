@@ -22,6 +22,7 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
     public static final String _ID = "_id";
     public static final String COL_TIME = "time";
     public static final String COL_LABEL = "label";
+    public static final String COL_DOSAGE = "dosage";
     public static final String COL_MON = "mon";
     public static final String COL_TUES = "tues";
     public static final String COL_WED = "wed";
@@ -53,6 +54,7 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
                 _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_TIME + " INTEGER NOT NULL, " +
                 COL_LABEL + " TEXT, " +
+                COL_DOSAGE + " TEXT, " +
                 COL_MON + " INTEGER NOT NULL, " +
                 COL_TUES + " INTEGER NOT NULL, " +
                 COL_WED + " INTEGER NOT NULL, " +
@@ -64,7 +66,6 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
                 ");";
 
         sqLiteDatabase.execSQL(CREATE_ALARMS_TABLE);
-
     }
 
     @Override
@@ -98,7 +99,6 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Alarm> getAlarms() {
-
         Cursor c = null;
 
         try{

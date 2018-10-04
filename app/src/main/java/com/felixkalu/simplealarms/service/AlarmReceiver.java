@@ -48,6 +48,7 @@ public final class AlarmReceiver extends BroadcastReceiver {
         builder.setContentText(alarm.getLabel());
         builder.setTicker(alarm.getLabel());
         builder.setVibrate(new long[] {1000,500,1000,500,1000,500});
+        //The next line of code is used to change the kind of alert that the phone does. When the time for the alarm happens
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setContentIntent(pIntent);
         builder.setAutoCancel(true);
@@ -100,6 +101,7 @@ public final class AlarmReceiver extends BroadcastReceiver {
      *              should run
      * @return A Calendar with the actual time of the next alarm.
      */
+
     private static Calendar getTimeForNextAlarm(Alarm alarm) {
 
         final Calendar calendar = Calendar.getInstance();
@@ -169,8 +171,6 @@ public final class AlarmReceiver extends BroadcastReceiver {
                 startIndex = 6;
                 break;
         }
-
         return startIndex;
     }
-
 }
