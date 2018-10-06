@@ -11,11 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.felixkalu.kweekmed.MainActivity;
 import com.felixkalu.kweekmed.R;
 import com.felixkalu.simplealarms.data.DatabaseHelper;
 import com.felixkalu.simplealarms.model.Alarm;
@@ -31,6 +33,7 @@ public final class AddEditAlarmFragment extends Fragment {
     private EditText mLabel;
     private EditText mDosage;
     private CheckBox mMon, mTues, mWed, mThurs, mFri, mSat, mSun;
+    private EditText edit_alarm_label;
 
     public static AddEditAlarmFragment newInstance(Alarm alarm) {
 
@@ -54,6 +57,29 @@ public final class AddEditAlarmFragment extends Fragment {
 
         mTimePicker = (TimePicker) v.findViewById(R.id.edit_alarm_time_picker);
         ViewUtils.setTimePickerTime(mTimePicker, alarm.getTime());
+
+        edit_alarm_label = (EditText)v.findViewById(R.id.edit_alarm_label);
+        edit_alarm_label.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mView = getLayoutInflater().inflate(R.layout.dialog_login, null);
+                EditText mEmail = (EditText) mView.findViewById(R.id.dialog_login_username_edittext);
+                EditText mPassword = (EditText) mView.findViewById(R.id.dialog_login_password_edittext);
+                Button mButton = (Button)mView.findViewById(R.id.dialog_login_button);
+
+                mButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Button Clicked from Dialog", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        });
 
         mLabel = (EditText) v.findViewById(R.id.edit_alarm_label);
         mDosage = (EditText)v.findViewById(R.id.edit_alarm_dosage) ;

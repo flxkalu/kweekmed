@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.felixkalu.kweekmed.R;
 import com.felixkalu.simplealarms.adapter.AlarmsAdapter;
 import com.felixkalu.simplealarms.model.Alarm;

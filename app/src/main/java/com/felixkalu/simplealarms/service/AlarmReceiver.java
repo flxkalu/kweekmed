@@ -45,7 +45,7 @@ public final class AlarmReceiver extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.ic_alarm_white_24dp);
         builder.setColor(ContextCompat.getColor(context, R.color.accent));
         builder.setContentTitle(context.getString(R.string.app_name));
-        builder.setContentText(alarm.getLabel());
+        builder.setContentText("Time To Take " + alarm.getLabel()+" " + alarm.getDosage());
         builder.setTicker(alarm.getLabel());
         builder.setVibrate(new long[] {1000,500,1000,500,1000,500});
         //The next line of code is used to change the kind of alert that the phone does. When the time for the alarm happens

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-
 import com.felixkalu.kweekmed.R;
 import com.felixkalu.simplealarms.data.DatabaseHelper;
 import com.felixkalu.simplealarms.model.Alarm;

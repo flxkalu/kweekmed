@@ -56,17 +56,16 @@
             tools:text="Medication"/>
 
 
-
         <EditText
             android:id="@+id/edit_alarm_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Select Medication"
             android:inputType="textCapWords"
             android:maxLength="15"
             android:textColor="@color/secondary_text"
-            android:textStyle="italic"
-            android:hint="Select Medication"
-            android:layout_marginBottom="16dp" />
+            android:textStyle="italic" />
 
         <View
             android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.felixkalu.simplealarms.ui.MainFragment;
 
@@ -47,8 +48,6 @@ public class HomeFragment extends Fragment {
     String language = "en-gb";
 
     public static String token;
-
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -155,6 +154,9 @@ public class HomeFragment extends Fragment {
             // TODO Auto-generated catch block
             e.printStackTrace();
             throw new Exception("Can not create token (InvalidKeyException)");
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.i("Exception: ", e.getMessage());
         } finally {
             DownloadTask task = new DownloadTask();
             task.execute();
@@ -195,8 +197,13 @@ public class HomeFragment extends Fragment {
 
             } catch (MalformedURLException e) {
                 Log.i("MalformedURLException ", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 Log.i("IOException ", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.i("IOException ", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             return null;
@@ -214,9 +221,11 @@ public class HomeFragment extends Fragment {
                 Log.i("Token ", token);
             } catch (JSONException e) {
                 Log.i("Exception ", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.i("Exception ", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
         }
     }
-
 }
