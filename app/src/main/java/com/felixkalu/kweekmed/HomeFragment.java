@@ -62,14 +62,16 @@ public class HomeFragment extends Fragment {
             setToken();
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         //initializing elements
-        ImageView imageView = (ImageView)v.findViewById(R.id.imageView);
+        ImageView conditionsImageView = (ImageView)v.findViewById(R.id.conditionsImageView);
         ImageView symptomsCheckerImageView = (ImageView)v.findViewById(R.id.symptomsCheckerImageView);
         ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
         ImageView findaDoctorImageView = (ImageView) v.findViewById(R.id.findaDoctorImageView);
         ImageView medicationReminderImageView =(ImageView)v.findViewById(R.id.medicationReminderImageView);
+        ImageView drugsAndMedsImageView = (ImageView)v.findViewById(R.id.drugsAndMedsImageView);
 
         SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
 
@@ -109,6 +111,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        drugsAndMedsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("drugsAndMedsImageView", "Clicked!");
+                DrugsAndMedicationsFragment drugsAndMedicationsFragment = new DrugsAndMedicationsFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, drugsAndMedicationsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
         findaDoctorImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +144,7 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
 
         return v;
     }
