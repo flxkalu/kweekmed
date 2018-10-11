@@ -86,7 +86,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:tint="@color/colorAccent"
+        android:tint="@color/lightRed"
         android:src="@drawable/ic_alarm_white_24dp"/>
 
 </RelativeLayout>

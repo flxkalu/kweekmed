@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private NewsFragment newsFragment;
     private SettingsFragment settingsFragment;
-    private NotificationFragment notificationFragment;
 
     //for asking the user for all the permissions needed.
     int PERMISSION_ALL = 1;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         mMainNav = (BottomNavigationView) findViewById(R.id.main_nav);
 
         homeFragment = new HomeFragment();
-        notificationFragment = new NotificationFragment();
         newsFragment = new NewsFragment();
         settingsFragment  = new SettingsFragment();
 
@@ -82,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_notif :
                         mMainNav.setItemBackgroundResource(R.color.colorAccent);
-                        setFragment(notificationFragment);
                         return true;
 
                     case R.id.nav_settings:

@@ -27,8 +27,6 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
-        ProgressBar progressBar = (ProgressBar)v.findViewById(R.id.newsProgressBar);
-        progressBar.setProgress(100);
 
         WebView webView = (WebView)v.findViewById(R.id.newsWebView);
         webView.getSettings().setJavaScriptEnabled(true);

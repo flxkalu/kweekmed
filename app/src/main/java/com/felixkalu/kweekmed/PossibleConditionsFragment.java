@@ -53,15 +53,11 @@ public class PossibleConditionsFragment extends Fragment {
     ArrayList<String> symptomIds = new ArrayList<>();
     ArrayList<String> symptomNames = new ArrayList<>();
 
-    TextView possibleConditionsWarningTextView;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_possible_conditions, container, false);
-
-        possibleConditionsWarningTextView = (TextView)v.findViewById(R.id.possibleConditionsWarningTextView);
 
         symptomIds = getArguments().getStringArrayList("symptomIds");
         symptomNames = getArguments().getStringArrayList("symptomNames");
@@ -140,18 +136,14 @@ public class PossibleConditionsFragment extends Fragment {
                 JSONArray jsonArray = new JSONArray(result);
 
                 if (jsonArray.length() == 0) {
-                    Toast.makeText(getActivity(), "No Possible Conditions Were Found ", Toast.LENGTH_LONG);
-                    possibleConditionsWarningTextView.setText("Note: With your symptoms, It is difficult for us to suggest possible ailments. Please contact a real doctor! sorry.");
-                    possibleConditionsWarningTextView.setTextColor(Color.parseColor("#8e1c0f"));
+                    Toast.makeText(getActivity(), "No Possible Conditions Were Found, Please Visit a Real Doctor ", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     listView.setVisibility(View.GONE);
                 } else {
-                    possibleConditionsWarningTextView.setText("Note: Every condition listed here is only a suggestion, We recommend a real doctor if the need arises.");
-
                     for (int i = 0; i < jsonArray.length(); i++) {
                         //used for storing specialisations returned in the inner loop
 
-                        String specialisationName = "";
+                        String specialisationName ="You need:";
                         String issueName = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Name");
                         String accuracy = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Accuracy");
 
@@ -161,9 +153,17 @@ public class PossibleConditionsFragment extends Fragment {
                         //for getting the specialization of the issue.
                         int arrayLength = jsonArray.getJSONObject(i).getJSONArray("Specialisation").length();
                         for (int j = 0; j < arrayLength; j++) {
-                            specialisationName += jsonArray.getJSONObject(i).getJSONArray("Specialisation").getJSONObject(j).getString("Name") + " ";
+                            //if it is only one specialization name...
+                            if(arrayLength == 1) {
+                                specialisationName +=" "+jsonArray.getJSONObject(i).getJSONArray("Specialisation").getJSONObject(j).getString("Name") + ".";
+                                //if it is more than one specialization name, add ,
+                            } else {
+                                specialisationName +=" "+jsonArray.getJSONObject(i).getJSONArray("Specialisation").getJSONObject(j).getString("Name") + "|";
+                            }
                             Log.i("Specialisation: ", specialisationName);
                         }
+
+                        specialisationName = specialisationName.substring(0, specialisationName.length() - 1) + '.';
                         diagnosis.add(new DiagnosisModel(issueName, accuracy, specialisationName));
                     }
 
@@ -185,7 +185,6 @@ public class PossibleConditionsFragment extends Fragment {
                         }
                     });
                 }
-
             } catch(JSONException e) {
                 Log.i("MESSAGE 3: ", e.toString());
             }

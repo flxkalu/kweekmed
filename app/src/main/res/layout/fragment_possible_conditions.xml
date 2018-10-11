@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".PossibleConditionsFragment">
 
-    <TextView
-        android:id="@+id/possibleConditionsWarningTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ProgressBar
         android:id="@+id/progress_loader"
         style="?android:attr/progressBarStyle"
@@ -40,16 +25,17 @@
     <ListView
         android:id="@+id/listview"
         android:layout_width="0dp"
-        android:layout_height="477dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
+        android:layout_height="0dp"
         android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/possibleConditionsWarningTextView">
+        app:layout_constraintTop_toTopOf="parent">
 
     </ListView>
 

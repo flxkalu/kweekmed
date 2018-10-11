@@ -41,7 +41,7 @@ public final class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.View
         final Context c = holder.itemView.getContext();
 
         if(mAccentColor == -1) {
-            mAccentColor = ContextCompat.getColor(c, R.color.accent);
+            mAccentColor = ContextCompat.getColor(c, R.color.lightRed);
         }
 
         if(mDays == null){
