@@ -59,30 +59,6 @@ public final class AddEditAlarmFragment extends Fragment {
         ViewUtils.setTimePickerTime(mTimePicker, alarm.getTime());
 
         edit_alarm_label = (EditText)v.findViewById(R.id.edit_alarm_label);
-
-//        the block of code below is used to implement pop up login page
-//        edit_alarm_label.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-//                View mView = getLayoutInflater().inflate(R.layout.dialog_login, null);
-//                EditText mEmail = (EditText) mView.findViewById(R.id.dialog_login_username_edittext);
-//                EditText mPassword = (EditText) mView.findViewById(R.id.dialog_login_password_edittext);
-//                Button mButton = (Button)mView.findViewById(R.id.dialog_login_button);
-//
-//                mButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(getActivity(), "Button Clicked from Dialog", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//
-//                mBuilder.setView(mView);
-//                AlertDialog dialog = mBuilder.create();
-//                dialog.show();
-//            }
-//        });
-
         mLabel = (EditText) v.findViewById(R.id.edit_alarm_label);
         mDosage = (EditText)v.findViewById(R.id.edit_alarm_dosage) ;
         mLabel.setText(alarm.getLabel());

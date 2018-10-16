@@ -12,9 +12,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.parse.ParseUser;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -28,14 +33,53 @@ import javax.net.ssl.X509TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LocationManager locationManager;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.top_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    //this block of code toggles the logout option on the menu
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.menu.top_menu);
+        if(ParseUser.getCurrentUser()!=null)
+            menu.getItem(1).setVisible(true);
+        else
+            menu.getItem(1).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+         super.onOptionsItemSelected(item);
+
+         switch (item.getItemId()) {
+             case R.id.help :
+                 //link to the Help Page
+                 return true;
+             case R.id.logout:
+                 ParseUser.logOut();
+                 Toast.makeText(this, "You Have Sucessfully Logged Out", Toast.LENGTH_LONG).show();
+                 //the two lines of codes below refreshes the activity
+                 return true;
+                 default:
+                     return false;
+         }
+    }
+
+    private LocationManager locationManager;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
 
     private HomeFragment homeFragment;
     private NewsFragment newsFragment;
     private SettingsFragment settingsFragment;
+    private MyProfileFragment myProfileFragment;
 
     //for asking the user for all the permissions needed.
     int PERMISSION_ALL = 1;
@@ -63,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         newsFragment = new NewsFragment();
+        myProfileFragment = new MyProfileFragment();
         settingsFragment  = new SettingsFragment();
 
         setFragment(homeFragment);
@@ -78,12 +123,13 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(homeFragment);
                         return true;
 
-                    case R.id.nav_notif :
-                        mMainNav.setItemBackgroundResource(R.color.colorAccent);
+                    case R.id.nav_profile :
+                        mMainNav.setItemBackgroundResource(R.color.colorPrimary);
+                        setFragment(myProfileFragment);
                         return true;
 
                     case R.id.nav_settings:
-                        mMainNav.setItemBackgroundResource(R.color.colorPrimaryDark);
+                        mMainNav.setItemBackgroundResource(R.color.colorPrimary);
                         setFragment(settingsFragment);
                         return true;
 
@@ -103,9 +149,12 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.addToBackStack(null);
+
+        //this line of code is used to animate fragment transitions
+        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
-
     }
 
     //this method is used to grant users all the permissions required for this app to work well.
@@ -141,5 +190,4 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }

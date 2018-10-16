@@ -73,17 +73,6 @@ public class HomeFragment extends Fragment {
         ImageView medicationReminderImageView =(ImageView)v.findViewById(R.id.medicationReminderImageView);
         ImageView drugsAndMedsImageView = (ImageView)v.findViewById(R.id.drugsAndMedsImageView);
 
-        SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
-
-        //searchview icon click listener
-       searchView.setOnSearchClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               //open the next fragment as it is in webMD app
-               Log.i("Note", "SearchView clicked");
-           }
-       });
-
        //symptomsChecker Link
         symptomsCheckerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +81,7 @@ public class HomeFragment extends Fragment {
 
                 EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, enterSymptomInfoFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -105,6 +95,7 @@ public class HomeFragment extends Fragment {
 
                 PossibleIssuesFragment possibleIssuesFragment = new PossibleIssuesFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -117,6 +108,7 @@ public class HomeFragment extends Fragment {
                 Log.i("drugsAndMedsImageView", "Clicked!");
                 DrugsAndMedicationsFragment drugsAndMedicationsFragment = new DrugsAndMedicationsFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, drugsAndMedicationsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -128,6 +120,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 FindDoctorFragment findDoctorFragment = new FindDoctorFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, findDoctorFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -139,6 +132,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 MainFragment alarmFragment = new MainFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, alarmFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

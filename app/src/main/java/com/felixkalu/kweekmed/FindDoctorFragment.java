@@ -194,6 +194,7 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
                 args.putString("doctorId", doctorsList.get(position).getId());
 
                 doctorsDetailsFragment.setArguments(args);
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, doctorsDetailsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

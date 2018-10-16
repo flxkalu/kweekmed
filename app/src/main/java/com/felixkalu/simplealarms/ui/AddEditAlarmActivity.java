@@ -89,13 +89,11 @@ public final class AddEditAlarmActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -104,5 +102,4 @@ public final class AddEditAlarmActivity extends AppCompatActivity {
         i.putExtra(MODE_EXTRA, mode);
         return i;
     }
-
 }

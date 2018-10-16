@@ -72,6 +72,7 @@ public class SignInFragment extends Fragment {
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Bundle args = new Bundle();
                 signUpFragment.setArguments(args);
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, signUpFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

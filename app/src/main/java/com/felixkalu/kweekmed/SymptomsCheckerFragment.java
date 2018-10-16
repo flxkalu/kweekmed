@@ -77,6 +77,7 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
                 args.putStringArrayList("symptomNames", symptomNames);
 
                 possibleConditionsFragment.setArguments(args);
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, possibleConditionsFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();

@@ -137,6 +137,7 @@ public class PossibleIssuesFragment extends Fragment {
                             args.putString("issueId", issueIds.get(position));
 
                             possibleIssuesDetailFragment.setArguments(args);
+                            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                             fragmentTransaction.replace(R.id.main_frame, possibleIssuesDetailFragment);
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();

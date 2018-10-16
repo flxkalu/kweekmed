@@ -13,9 +13,9 @@
         android:title="News" />
 
     <item
-        android:id="@+id/nav_notif"
-        android:icon="@drawable/outline_notification_important_black_24dp2x"
-        android:title="@string/nav_notif" />
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/profileicon"
+        android:title="@string/nav_profile" />
 
     <item
         android:id="@+id/nav_settings"
