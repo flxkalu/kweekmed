@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.felixkalu.heart_rate_monitor.HeartRateMonitor;
 import com.felixkalu.simplealarms.ui.MainFragment;
 
 import org.json.JSONException;
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         }
 
         //initializing elements
-        ImageView conditionsImageView = (ImageView)v.findViewById(R.id.conditionsImageView);
+        ImageView heartRateMonitorImageView = (ImageView)v.findViewById(R.id.heartRateMonitorImageView);
         ImageView symptomsCheckerImageView = (ImageView)v.findViewById(R.id.symptomsCheckerImageView);
         ImageView possibleIssuesImageView = (ImageView)v.findViewById(R.id.possibleIssuesImageView);
         ImageView findaDoctorImageView = (ImageView) v.findViewById(R.id.findaDoctorImageView);
@@ -139,6 +139,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        heartRateMonitorImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HeartRateMonitor.class);
+                startActivity(intent);
+            }
+        });
 
         return v;
     }

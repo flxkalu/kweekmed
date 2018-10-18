@@ -102,7 +102,6 @@ public class PossibleIssuesDetailFragment extends Fragment {
             } catch (Exception e) {
                 Toast.makeText(getActivity().getApplicationContext(), "Could Not Find anything", Toast.LENGTH_LONG);
             }
-
             return null;
         }
 

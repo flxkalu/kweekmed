@@ -42,4 +42,20 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+
+    <!-- Terms of use -->
+    <string name="termsofuse">Terms Of Use Goes Here</string>
+    <!-- Private Policy -->
+    <string name="privatepolicy">Private Policy Goes Here</string>
+    <!-- About KWeekmed -->
+    <string name="aboutkweekmed">About kweekmed Goes Here</string>
+    <!--About the developers -->
+    <string name="aboutthedevelopers">About the developers Goes Here</string>
+    <!--Note for Doctors During SignUp -->
+    <string name="notesfordoctors">Notes For Doctors Goes here</string>
+
+
+    <!-- For heartrate monitor -->
+    <string name="default_text">--</string>
+
 </resources>

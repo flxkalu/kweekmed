@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.CALL_PHONE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WAKE_LOCK,
     };
 
 

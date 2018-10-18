@@ -64,7 +64,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:src="@drawable/doctor"
-        app:layout_constraintEnd_toStartOf="@+id/conditionsImageView"
+        app:layout_constraintEnd_toStartOf="@+id/heartRateMonitorImageView"
         app:layout_constraintStart_toEndOf="@+id/medicationReminderImageView"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -158,17 +158,17 @@
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/findaDoctorImageView" />
 
-    <ImageView
-        android:id="@+id/conditionsImageView"
-        android:background="@drawable/textlinesblue"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:src="@drawable/listconditions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        <ImageView
+            android:id="@+id/heartRateMonitorImageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/textlinesblue"
+            android:src="@drawable/listconditions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView12"
@@ -180,7 +180,7 @@
         android:text="Heart Rate Checker"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conditionsImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/heartRateMonitorImageView" />
 
     </android.support.constraint.ConstraintLayout>
 
