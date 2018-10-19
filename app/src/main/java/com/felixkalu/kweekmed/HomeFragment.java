@@ -71,10 +71,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        locationManager = (LocationManager)  getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+            deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } else {
-            Toast.makeText(getActivity(), "Device Location Unknown", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
