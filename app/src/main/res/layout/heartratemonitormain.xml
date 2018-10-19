@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">        
         </TextView>
         <RelativeLayout
-	        android:orientation="horizontal" 
+	        android:orientation="horizontal"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent">
 	        <com.felixkalu.heart_rate_monitor.HeartbeatView android:id="@+id/image"
@@ -27,9 +27,10 @@
 		    </com.felixkalu.heart_rate_monitor.HeartbeatView>
 	    </RelativeLayout>
     </LinearLayout>
-	<SurfaceView android:id="@+id/preview"
-        android:layout_weight="1" 
-		android:layout_width="fill_parent"
-		android:layout_height="0dp">
-	</SurfaceView>
+
+	<SurfaceView
+		android:id="@+id/preview"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"></SurfaceView>
 </LinearLayout>

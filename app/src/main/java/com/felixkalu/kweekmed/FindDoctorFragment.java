@@ -49,20 +49,6 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
         // Required empty public constructor
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                    deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                }
-            }
-        }
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,15 +66,17 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
+        //fi the permission is not already granted, request for permission else just get the last known location of the device
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
             deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //make sure that the location of the device is set before doing other things
+            setDeviceCurrentLocation();
         }
 
-        //make sure that the location of the device is set before doing other things
-        setDeviceCurrentLocation();
+
 
         //searchView and the clickListener
         SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
@@ -251,4 +239,22 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
             }
         }
     }
+
+    //main activity gets all permissions but this is here just incase the permission is not granted from the main activity avoiding a crash
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+                    deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    //make sure that the location of the device is set before doing other things
+                    setDeviceCurrentLocation();
+                }
+            }
+        }
+    }
+
 }
