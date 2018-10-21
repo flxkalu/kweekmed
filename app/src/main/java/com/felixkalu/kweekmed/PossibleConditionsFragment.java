@@ -177,8 +177,6 @@ public class PossibleConditionsFragment extends Fragment {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                             DiagnosisModel model = diagnosis.get(i);
-
-
                             diagnosis.set(i, model);
 
                             adapter.updateRecords(diagnosis);

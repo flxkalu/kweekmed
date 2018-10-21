@@ -52,8 +52,7 @@ public class PossibleIssuesFragment extends Fragment {
         String token = HomeFragment.token;
 
         DownloadTask task = new DownloadTask();
-
-        task.execute(url+token+language);
+        task.execute(url + token + language);
 
         return v;
     }
@@ -91,7 +90,7 @@ public class PossibleIssuesFragment extends Fragment {
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
             } catch (Exception e) {
-                Toast.makeText(getActivity().getApplicationContext(), "Could Not Find anything", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(), "Could Not Find anything", Toast.LENGTH_LONG);
             }
             return null;
         }
@@ -118,7 +117,7 @@ public class PossibleIssuesFragment extends Fragment {
                         issueIds.add(id);
 
                         Log.i("Issue Name: ", name);
-                }
+                    }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, issues);
 
                     progressBar.setVisibility(View.GONE);
@@ -146,6 +145,9 @@ public class PossibleIssuesFragment extends Fragment {
 
             } catch (JSONException e) {
                 Log.i("MESSAGE 3: ", e.toString());
+                Toast.makeText(getActivity(),"Error with JSON " + e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -217,5 +217,4 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
             }
         }
     }
-
 }

@@ -49,7 +49,7 @@ public final class AlarmReceiver extends BroadcastReceiver {
         builder.setTicker(alarm.getLabel());
         builder.setVibrate(new long[] {1000,500,1000,500,1000,500});
         //The next line of code is used to change the kind of alert that the phone does. When the time for the alarm happens
-        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setContentIntent(pIntent);
         builder.setAutoCancel(true);
         builder.setPriority(Notification.PRIORITY_HIGH);

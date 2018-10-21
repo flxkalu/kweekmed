@@ -39,6 +39,10 @@ dependencies {
     implementation 'com.android.support:gridlayout-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //for circlar imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }
 repositories {
     mavenCentral()

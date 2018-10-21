@@ -34,45 +34,6 @@ import javax.net.ssl.X509TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.top_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
-
-    }
-
-    //this block of code toggles the logout option on the menu
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        MenuItem register = menu.findItem(R.menu.top_menu);
-        if(ParseUser.getCurrentUser()!=null)
-            menu.getItem(1).setVisible(true);
-        else
-            menu.getItem(1).setVisible(false);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-         super.onOptionsItemSelected(item);
-
-         switch (item.getItemId()) {
-             case R.id.help :
-                 //link to the Help Page
-                 return true;
-             case R.id.logout:
-                 ParseUser.logOut();
-                 Toast.makeText(this, "You Have Sucessfully Logged Out", Toast.LENGTH_LONG).show();
-                 //the two lines of codes below refreshes the activity
-                 return true;
-                 default:
-                     return false;
-         }
-    }
-
     private LocationManager locationManager;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
@@ -82,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private SettingsFragment settingsFragment;
     private MyProfileFragment myProfileFragment;
 
-    //for asking the user for all the permissions needed.
+    //array for saving all the required user permissions.
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -91,18 +52,17 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WAKE_LOCK,
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
         trustEveryone();
 
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         } else {
-
         }
 
         mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
@@ -148,16 +108,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void setFragment(Fragment fragment) {
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.addToBackStack(null);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        //this line of code is used to animate fragment transitions
-        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            //this line of code is used to animate fragment transitions
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
 
-        fragmentTransaction.replace(R.id.main_frame, fragment);
-        fragmentTransaction.commit();
+            fragmentTransaction.replace(R.id.main_frame, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
     }
 
     //this method is used to grant users all the permissions required for this app to work well.
@@ -191,6 +152,56 @@ public class MainActivity extends AppCompatActivity {
                     context.getSocketFactory());
         } catch (Exception e) { // should never happen
             e.printStackTrace();
+        }
+    }
+
+    //this method ensures that when the app is on the home page..
+    //the back button does not open a blank activity or open a fragment inside another fragment
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            moveTaskToBack(false);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.top_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    //this block of code toggles the logout option on the menu
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem register = menu.findItem(R.menu.top_menu);
+        if(ParseUser.getCurrentUser()!=null)
+            menu.getItem(1).setVisible(true);
+        else
+            menu.getItem(1).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.help :
+                //link to the Help Page
+                return true;
+            case R.id.logout:
+                ParseUser.logOut();
+                Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_LONG).show();
+                //the two lines of codes below refreshes the activity
+                return true;
+            default:
+                return false;
         }
     }
 }

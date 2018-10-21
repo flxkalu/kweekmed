@@ -71,15 +71,16 @@ public class HomeFragment extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        locationManager = (LocationManager)  getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            //if the permission is not already granted, request for permission else just get the last known location of the device
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+                deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-            deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-
+        //to get the token by calling the setToken method.
         try {
             setToken();
         } catch (Exception e) {
@@ -174,18 +175,19 @@ public class HomeFragment extends Fragment implements LocationListener {
         pharmaciesImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                setDeviceCurrentLocation();
-
-                String location = Double.toString(deviceCurrentLocation.getLatitude()) + "," + Double.toString(deviceCurrentLocation.getLongitude());
-                String url = "https://www.google.com/maps/search/pharmacy/@"+location+"z/data=!3m1!4b1";
-                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(url));
-                intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
-                startActivity(intent);
+                try {
+                    String location = Double.toString(deviceCurrentLocation.getLatitude()) + "," + Double.toString(deviceCurrentLocation.getLongitude());
+                    String url = "https://www.google.com/maps/search/pharmacy/@" + location + "z/data=!3m1!4b1";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                    startActivity(intent);
+                } catch (NullPointerException e) {
+                    Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
-
         return v;
     }
 
@@ -223,21 +225,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         deviceCurrentLocation = location;
         Log.i("Current Location", deviceCurrentLocation.toString());
     }
-
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
+    public void onProviderEnabled(String provider) { }
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+    public void onProviderDisabled(String provider) { }
 
     class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -281,7 +274,6 @@ public class HomeFragment extends Fragment implements LocationListener {
                 Log.i("IOException ", e.getMessage());
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
             return null;
         }
 
@@ -305,17 +297,6 @@ public class HomeFragment extends Fragment implements LocationListener {
         }
     }
 
-    //method to make sure that the device current location is set and not left null
-    public void setDeviceCurrentLocation() {
-        if (deviceCurrentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                Log.i("Current location", Double.toString(deviceCurrentLocation.getLatitude()));
-            }
-        }
-    }
-
     //main activity gets all permissions but this is here just incase the permission is not granted from the main activity avoiding a crash.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -326,8 +307,6 @@ public class HomeFragment extends Fragment implements LocationListener {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
                     deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    //make sure that the location of the device is set before doing other things
-                    setDeviceCurrentLocation();
                 }
             }
         }

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -55,52 +56,49 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
 
         View v = inflater.inflate(R.layout.fragment_doctors_list, container, false);
 
-        //clear the arrayLists to be on a safer side
-        doctorsLatitudes.clear();
-        doctorsLongitudes.clear();
-
         //initializing all needed stuff
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         listView = (ListView) v.findViewById(R.id.doctorsListView);
         final ArrayList<DoctorsModel> doctorsList = new ArrayList<>();
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        //fi the permission is not already granted, request for permission else just get the last known location of the device
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-            deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            //make sure that the location of the device is set before doing other things
-            setDeviceCurrentLocation();
-        }
-
-
-
         //searchView and the clickListener
         SearchView searchView = (SearchView) v.findViewById(R.id.symptomsSearchView);
         searchView.setOnQueryTextListener(this);
 
-        //setting up the query we need to search the parse server
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Doctors");
-        final ParseGeoPoint deviceLocation = new ParseGeoPoint(deviceCurrentLocation.getLatitude(), deviceCurrentLocation.getLongitude());
+        //clear the arrayLists to be on a safer side
+        doctorsLatitudes.clear();
+        doctorsLongitudes.clear();
 
-        //this line arranges the list according to the closest doctors around the device
-        query.whereNear("doctorsLocation", deviceLocation);
-        //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> doctors, ParseException e) {
-                //if the exception is null...
-                if (e == null) {
-                    Log.i("findInBackground", "Retrieved " + doctors.size() + " doctors");
-                    if (doctors.size() > 0) {
-                        for (ParseObject doctor : doctors) {
+            //if the permission is not already granted, request for permission else just get the last known location of the device
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
+                deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
 
-                            //for storing doctors location in parseGeoPoint type
-                            ParseGeoPoint doctorsLocation = (ParseGeoPoint) doctor.get("doctorsLocation");
+        try {
+            //setting up the query we need to search the parse server
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Doctors");
+            final ParseGeoPoint deviceLocation = new ParseGeoPoint(deviceCurrentLocation.getLatitude(), deviceCurrentLocation.getLongitude());
+
+            //this line arranges the list according to the closest doctors around the device
+            query.whereNear("doctorsLocation", deviceLocation);
+            //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> doctors, ParseException e) {
+                    //if the exception is null...
+                    if (e == null) {
+                        Log.i("findInBackground", "Retrieved " + doctors.size() + " doctors");
+                        if (doctors.size() > 0) {
+                            for (ParseObject doctor : doctors) {
+
+                                //for storing doctors location in parseGeoPoint type
+                                ParseGeoPoint doctorsLocation = (ParseGeoPoint) doctor.get("doctorsLocation");
 
                                 //this two lines of code are used to convert the parselocations to miles.
                                 Double distanceInMiles = deviceLocation.distanceInMilesTo((ParseGeoPoint) doctor.get("doctorsLocation"));
@@ -123,33 +121,36 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
                                 String doctorId = doctor.getObjectId().toString();
 
                                 //this block makes sure that doctorslocation has a value if not, it should be null so that the position number is maintained
-                                if(doctorsLocation!=null) {
+                                if (doctorsLocation != null) {
                                     doctorsLatitudes.add(doctorsLocation.getLatitude());
                                     doctorsLongitudes.add(doctorsLocation.getLongitude());
                                 } else {
                                     doctorsLatitudes.add(null);
                                     doctorsLatitudes.add(null);
                                 }
-
                                 Log.i("===DOCTORID==== ", doctorId);
-
                                 doctorsList.add(new DoctorsModel(name, surname, sex, age, specialty, currentHospitalOfService,
                                         yearsOfExperience, email, primaryMobileNumber, medicalCertificate,
                                         photoLink, description, location, doctorId));
+                            }
                         }
                     }
-                }
-                try {
-                    progressBar.setVisibility(View.GONE);
-                    doctorsAdapter = new DoctorsAdapter(getActivity(), doctorsList);
-                    listView.setAdapter(doctorsAdapter);
+                    try {
+                        progressBar.setVisibility(View.GONE);
+                        doctorsAdapter = new DoctorsAdapter(getActivity(), doctorsList);
+                        listView.setAdapter(doctorsAdapter);
 
-                    listView.setTextFilterEnabled(true);
-                } catch (Exception ex) {
-                    Log.i("EXCEPTION ERROR", ex.getMessage());
+                        listView.setTextFilterEnabled(true);
+                    } catch (Exception ex) {
+                        Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        } catch (NullPointerException ex) {
+                Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+                Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -188,7 +189,6 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
                 fragmentTransaction.commit();
             }
         });
-
         return v;
     }
 
@@ -213,32 +213,17 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onLocationChanged(Location location) {
         deviceCurrentLocation = location;
+        Log.i("Current location", deviceCurrentLocation.toString());
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) { }
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    //method to make sure that the device current location is set and not left null
-    public void setDeviceCurrentLocation() {
-        if (deviceCurrentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
-        }
-    }
+    public void onProviderDisabled(String provider) { }
 
     //main activity gets all permissions but this is here just incase the permission is not granted from the main activity avoiding a crash
     @Override
@@ -250,11 +235,8 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
                     deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    //make sure that the location of the device is set before doing other things
-                    setDeviceCurrentLocation();
                 }
             }
         }
     }
-
 }

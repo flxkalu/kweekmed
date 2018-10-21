@@ -48,9 +48,9 @@ public class EnterSymptomInfoFragment extends Fragment {
 
                     symptomsCheckerFragment.setArguments(args);
 
+                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                     fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 } else {
                     Toast.makeText(getActivity(), "Please Enter Your Age", Toast.LENGTH_LONG).show();
