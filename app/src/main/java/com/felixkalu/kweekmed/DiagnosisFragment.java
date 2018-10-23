@@ -41,9 +41,9 @@ import javax.net.ssl.X509TrustManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PossibleConditionsFragment extends Fragment {
+public class DiagnosisFragment extends Fragment {
 
-    public PossibleConditionsFragment() {
+    public DiagnosisFragment() {
         // Required empty public constructor
     }
 
@@ -58,6 +58,8 @@ public class PossibleConditionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_possible_conditions, container, false);
+
+        getActivity().setTitle("Possible Diagnosis");
 
         symptomIds = getArguments().getStringArrayList("symptomIds");
         symptomNames = getArguments().getStringArrayList("symptomNames");
@@ -116,10 +118,11 @@ public class PossibleConditionsFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
+            } catch (RuntimeException e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             } catch (Exception e) {
-                Log.i("Exception From PCF", e.getMessage());
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
             return null;
         }
 
@@ -132,7 +135,6 @@ public class PossibleConditionsFragment extends Fragment {
             final ArrayList<DiagnosisModel> diagnosis = new ArrayList<>();
 
             try {
-
                 JSONArray jsonArray = new JSONArray(result);
 
                 if (jsonArray.length() == 0) {
@@ -184,7 +186,9 @@ public class PossibleConditionsFragment extends Fragment {
                     });
                 }
             } catch(JSONException e) {
-                Log.i("MESSAGE 3: ", e.toString());
+                Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -204,5 +208,4 @@ public class PossibleConditionsFragment extends Fragment {
 
         return ids;
     }
-
 }

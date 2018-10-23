@@ -14,11 +14,11 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="120dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/textlines"
             android:contentDescription="@string/kweekmedlogo"
             android:src="@drawable/kweekmedheaderlatest"
@@ -26,16 +26,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <SearchView
+            android:id="@+id/homeSearchView"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:queryHint="Quick Search Conditions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"></SearchView>
+
         <ImageView
             android:id="@+id/symptomsCheckerImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/sicktwo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/homeSearchView" />
 
         <ImageView
             android:id="@+id/possibleIssuesImageView"
@@ -43,13 +57,14 @@
             android:layout_height="100dp"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/symptomschecker"
             app:layout_constraintEnd_toStartOf="@+id/drugsAndMedsImageView"
             app:layout_constraintStart_toEndOf="@+id/symptomsCheckerImageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/homeSearchView" />
 
         <ImageView
             android:id="@+id/findaDoctorImageView"
@@ -60,6 +75,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/doctor"
             app:layout_constraintEnd_toStartOf="@+id/heartRateMonitorImageView"
             app:layout_constraintStart_toEndOf="@+id/medicationReminderImageView"
@@ -73,6 +89,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/medicine"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/symptomsCheckerTextView" />
 
@@ -84,7 +101,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Symptom Checker"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/symptomsCheckerImageView" />
@@ -99,7 +116,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="Possible Conditions"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintEnd_toStartOf="@+id/textView10"
             app:layout_constraintStart_toEndOf="@+id/symptomsCheckerTextView"
@@ -113,7 +130,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Medication Reminders"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/medicationReminderImageView" />
@@ -122,12 +139,13 @@
             android:id="@+id/drugsAndMedsImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/drugsandmedication"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/homeSearchView" />
 
         <TextView
             android:id="@+id/textView10"
@@ -137,7 +155,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="Drugs and Medications"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/drugsAndMedsImageView" />
@@ -152,7 +170,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="Find A Doctor"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintEnd_toStartOf="@+id/textView12"
             app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -165,6 +183,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/listconditions"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -177,7 +196,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:text="Blood Pressure Checker"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/heartRateMonitorImageView" />
@@ -192,6 +211,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/pharmacy"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -206,7 +226,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:text="Nearby Pharmacies"
-            android:textColor="#2b3392"
+            android:textColor="@color/fontcolor"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

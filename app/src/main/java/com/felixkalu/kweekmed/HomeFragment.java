@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.felixkalu.heart_rate_monitor.HeartRateMonitor;
@@ -48,6 +49,7 @@ import Decoder.BASE64Encoder;
  */
 public class HomeFragment extends Fragment implements LocationListener {
 
+
     HttpURLConnection myURLConnection;
     String computedHashString;
 
@@ -71,7 +73,10 @@ public class HomeFragment extends Fragment implements LocationListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        getActivity().setTitle("Home");
+
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             //if the permission is not already granted, request for permission else just get the last known location of the device
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -97,12 +102,13 @@ public class HomeFragment extends Fragment implements LocationListener {
         ImageView drugsAndMedsImageView = (ImageView)v.findViewById(R.id.drugsAndMedsImageView);
         ImageView pharmaciesImageView = (ImageView)v.findViewById(R.id.pharmaciesImageView);
 
-       //symptomsChecker Link
+        SearchView homeSearchView = (SearchView)v.findViewById(R.id.homeSearchView);
+
+        //symptomsChecker Link
         symptomsCheckerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("Note", "symptoms checker clicked");
-
                 EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -116,8 +122,7 @@ public class HomeFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View v) {
                 Log.i("Note", "Possible Issues Clicked");
-
-                PossibleIssuesFragment possibleIssuesFragment = new PossibleIssuesFragment();
+                IssuesListFragment possibleIssuesFragment = new IssuesListFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
@@ -142,7 +147,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         findaDoctorImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FindDoctorFragment findDoctorFragment = new FindDoctorFragment();
+                DoctorsListFragment findDoctorFragment = new DoctorsListFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
                 fragmentTransaction.replace(R.id.main_frame, findDoctorFragment);
@@ -183,11 +188,21 @@ public class HomeFragment extends Fragment implements LocationListener {
                     startActivity(intent);
                 } catch (NullPointerException e) {
                     Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_LONG).show();
+                    getFragmentManager().popBackStackImmediate();
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_LONG).show();
+                    getFragmentManager().popBackStackImmediate();
                 }
             }
         });
+
+        homeSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_LONG).show();
+            }
+        });
+
         return v;
     }
 
@@ -261,7 +276,6 @@ public class HomeFragment extends Fragment implements LocationListener {
                     result += current;
                     data = reader.read();
                 }
-
                 return result;
 
             } catch (MalformedURLException e) {

@@ -51,7 +51,8 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_symptoms_checker, container, false);
-        getActivity().setTitle("Enter Symptoms?");
+
+        getActivity().setTitle("Select All Symptoms");
 
         SearchView symptomsSearchView = (SearchView)v.findViewById(R.id.symptomsSearchView);
         symptomsSearchView.setOnQueryTextListener(this);
@@ -64,7 +65,7 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PossibleConditionsFragment possibleConditionsFragment = new PossibleConditionsFragment();
+                DiagnosisFragment possibleConditionsFragment = new DiagnosisFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Bundle args = new Bundle();
 

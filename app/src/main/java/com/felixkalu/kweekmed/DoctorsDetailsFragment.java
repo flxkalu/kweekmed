@@ -33,6 +33,9 @@ public class DoctorsDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_doctors_details, container, false);
 
+        //set the title of the page to the name of the current doctor
+        getActivity().setTitle(getArguments().getString("name")+" "+getArguments().getString("surname"));
+
         ImageView doctorPicture = (ImageView)v.findViewById(R.id.doctorPicture);
         ImageButton locationImageButton = (ImageButton)v.findViewById(R.id.locationImageButton);
         ImageButton callNowImageButton = (ImageButton)v.findViewById(R.id.callNowImageButton);

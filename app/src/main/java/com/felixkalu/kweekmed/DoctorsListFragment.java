@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTextListener, LocationListener {
+public class DoctorsListFragment extends Fragment implements SearchView.OnQueryTextListener, LocationListener {
 
     private ListView listView;
     private ProgressBar progressBar;
@@ -46,7 +46,7 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
     private ArrayList<Double> doctorsLatitudes = new ArrayList<Double>();
     private ArrayList<Double> doctorsLongitudes= new ArrayList<Double>();
 
-    public FindDoctorFragment() {
+    public DoctorsListFragment() {
         // Required empty public constructor
     }
 
@@ -55,6 +55,8 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_doctors_list, container, false);
+
+        getActivity().setTitle("Doctors & their Locations");
 
         //initializing all needed stuff
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
@@ -141,6 +143,8 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
                         listView.setAdapter(doctorsAdapter);
 
                         listView.setTextFilterEnabled(true);
+                    } catch (NullPointerException ex) {
+                        Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_LONG).show();
                     } catch (Exception ex) {
                         Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_LONG).show();
                     }
@@ -148,8 +152,10 @@ public class FindDoctorFragment extends Fragment implements SearchView.OnQueryTe
             });
         } catch (NullPointerException ex) {
                 Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_LONG).show();
+                getFragmentManager().popBackStackImmediate();
         } catch (Exception ex) {
                 Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_LONG).show();
+                getFragmentManager().popBackStackImmediate();
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -30,6 +30,8 @@ public class EnterSymptomInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_enter_info, container, false);
 
+        getActivity().setTitle("Enter Age and Gender");
+
         final EditText ageEditText = (EditText)v.findViewById(R.id.ageEditText);
 
         Button button = (Button)v.findViewById(R.id.button);

@@ -1,7 +1,6 @@
 package com.felixkalu.kweekmed;
 
 
-import android.app.FragmentManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,12 +28,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PossibleIssuesFragment extends Fragment {
+public class IssuesListFragment extends Fragment {
 
     ListView possibleIssuesListView;
     ProgressBar progressBar;
 
-    public PossibleIssuesFragment() {
+    public IssuesListFragment() {
         // Required empty public constructor
     }
 
@@ -43,6 +41,8 @@ public class PossibleIssuesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_possible_issues, container, false);
+
+        getActivity().setTitle("Possible Conditions");
 
         possibleIssuesListView = (ListView)v.findViewById(R.id.possibleIssuesListView);
         progressBar = (ProgressBar) v.findViewById(R.id.possibleIssuesProgressBar);
@@ -89,6 +89,8 @@ public class PossibleIssuesFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
+            } catch (RuntimeException e) {
+                Toast.makeText(getActivity(), "Could Not Find anything", Toast.LENGTH_LONG);
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Could Not Find anything", Toast.LENGTH_LONG);
             }
@@ -128,7 +130,7 @@ public class PossibleIssuesFragment extends Fragment {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         Log.i("you tapped: ", issues.get(position) + " The Id is: " + issueIds.get(position));// this line of code displays the name of the issue that was tapped.
-                            PossibleIssuesDetailFragment possibleIssuesDetailFragment = new PossibleIssuesDetailFragment();
+                            IssuesDetailFragment possibleIssuesDetailFragment = new IssuesDetailFragment();
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                             Bundle args = new Bundle();
 

@@ -44,6 +44,8 @@ public class DrugsAndMedicationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_drugs_and_medications, container, false);
 
+        getActivity().setTitle("Drugs and Medications");
+
         WebView webView = (WebView)v.findViewById(R.id.drugsAndMedicationsWebview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());

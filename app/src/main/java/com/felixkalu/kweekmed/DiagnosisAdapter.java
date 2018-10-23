@@ -59,7 +59,7 @@ public class DiagnosisAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.issueTextView = (TextView) view.findViewById(R.id.issueTextView);
-            holder.specialistTextView = (TextView) view.findViewById(R.id.specialistTextView);
+            //holder.specialistTextView = (TextView) view.findViewById(R.id.specialistTextView);
             holder.accuracyProgressBar = (ProgressBar) view.findViewById(R.id.acuuracyProgressBar);
 
             view.setTag(holder);
@@ -70,7 +70,7 @@ public class DiagnosisAdapter extends BaseAdapter {
         DiagnosisModel model = diagnosis.get(i);
 
         holder.issueTextView.setText(model.getIssueName());
-        holder.specialistTextView.setText(model.getSpecialistType());
+        //holder.specialistTextView.setText(model.getSpecialistType());
         holder.accuracyProgressBar.setMax(100);
         //this line of code changes the progressbar color to red if the OS is above lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

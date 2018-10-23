@@ -27,6 +27,7 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
+        getActivity().setTitle("Medical News");
 
         WebView webView = (WebView)v.findViewById(R.id.newsWebView);
         webView.getSettings().setJavaScriptEnabled(true);

@@ -23,7 +23,7 @@ import java.net.URL;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PossibleIssuesDetailFragment extends Fragment {
+public class IssuesDetailFragment extends Fragment {
 
     String possibleIssueId;
     TextView descriptionTextView;
@@ -34,7 +34,7 @@ public class PossibleIssuesDetailFragment extends Fragment {
     TextView synonymsTextView;
     TextView treatmentDescriptionTextView;
 
-    public PossibleIssuesDetailFragment() {
+    public IssuesDetailFragment() {
         // Required empty public constructor
     }
 
@@ -43,6 +43,7 @@ public class PossibleIssuesDetailFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_possible_issues_detail, container, false);
 
+        getActivity().setTitle("Issue Details");
 
         descriptionTextView = (TextView)v.findViewById(R.id.doctorsDetailsDescriptionTextView);
         medicalConditiontextView = (TextView)v.findViewById(R.id.medicalConditiontextView);

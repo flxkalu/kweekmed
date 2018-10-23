@@ -11,11 +11,14 @@
 
     <color name="lightBlue">#d1e4fa</color>
     <color name="red">#95000d</color>
+    <color name="fontcolor">#2b3392</color>
 
 
     <color name="secondary_text">#757575</color>
     <color name="accent">#FF4081</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#8affa9</color>
 
 </resources>

@@ -25,6 +25,7 @@ public class DiagnosisDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_diagnosis_detail, container, false);
 
+        getActivity().setTitle("Diagnosis Details");
 
 
 
