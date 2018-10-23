@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,51 +67,62 @@ public class SettingsFragment extends Fragment implements LocationListener {
         signInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ParseUser.getCurrentUser() == null) {
 
-                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                View mView = getLayoutInflater().inflate(R.layout.fragment_sign_in, null);
-                final EditText usernameEditText = (EditText) mView.findViewById(R.id.loginUserNameEditText);
-                final EditText passwordEditText = (EditText) mView.findViewById(R.id.loginUserPasswordEditText);
-                Button singInButton = (Button)mView.findViewById(R.id.signInButton);
+                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                    View mView = getLayoutInflater().inflate(R.layout.fragment_sign_in, null);
+                    final EditText usernameEditText = (EditText) mView.findViewById(R.id.loginUserNameEditText);
+                    final EditText passwordEditText = (EditText) mView.findViewById(R.id.loginUserPasswordEditText);
+                    Button singInButton = (Button) mView.findViewById(R.id.signInButton);
 
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
 
-                singInButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ParseUser.getCurrentUser() == null) {
-                            String userName = usernameEditText.getText().toString();
-                            String password = passwordEditText.getText().toString();
-                            //check and be sure that username and password fields are not empty
-                            if (!(userName.matches("") || password.matches(""))) {
-                                try {
-                                    ParseUser.logInInBackground(userName, password, new LogInCallback() {
-                                        public void done(ParseUser user, ParseException e) {
-                                            if (user != null) {
-                                                Toast.makeText(getActivity(), "You have Signed in", Toast.LENGTH_LONG).show();
-                                                //close the log in pop-up dialog
-                                                dialog.dismiss();
-                                            } else {
-                                                Toast.makeText(getActivity(), "Error Signing in", Toast.LENGTH_LONG).show();
+                    singInButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (ParseUser.getCurrentUser() == null) {
+                                String userName = usernameEditText.getText().toString();
+                                String password = passwordEditText.getText().toString();
+                                //check and be sure that username and password fields are not empty
+                                if (!(userName.matches("") || password.matches(""))) {
+                                    try {
+                                        ParseUser.logInInBackground(userName, password, new LogInCallback() {
+                                            public void done(ParseUser user, ParseException e) {
+                                                if (user != null) {
+                                                    Toast.makeText(getActivity(), "You have Signed in", Toast.LENGTH_SHORT).show();
+                                                    dialog.dismiss();
+                                                    //Redirect to MyProfile fragment.
+                                                    MyProfileFragment fragment = new MyProfileFragment();
+                                                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                                    fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                                                    fragmentTransaction.replace(R.id.main_frame, fragment);
+                                                    fragmentTransaction.addToBackStack(null);
+                                                    fragmentTransaction.commit();
+                                                } else {
+                                                    Toast.makeText(getActivity(), "Error Signing in", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
-                                } catch (Exception e) {
-                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                        });
+                                    } catch (Exception e) {
+                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getActivity(), "Complete Form", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(getActivity(), "Please Complete The Sign In Form", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getActivity(), "Already Signed In. Sign Out First", Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
-                //to show the dialog
-                dialog.show();
+                    });
+                    //to show the dialog
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Already Signed In as " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         feedBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,45 +243,50 @@ public class SettingsFragment extends Fragment implements LocationListener {
         signUpPatientTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                View mView = getLayoutInflater().inflate(R.layout.fragment_sign_up, null);
+                if (ParseUser.getCurrentUser() == null) {
+                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                    View mView = getLayoutInflater().inflate(R.layout.fragment_sign_up, null);
 
-                final Button signUpButton = (Button) mView.findViewById(R.id.signUpButton2);
-                final EditText userUsernameTextView = (EditText)mView.findViewById(R.id.userUsernameTextView);
-                final EditText userEmailTextView = (EditText)mView.findViewById(R.id.userEmailTextView);
-                final EditText userPasswordTextView = (EditText)mView.findViewById(R.id.userPasswordTextView);
-                final EditText userPasswordConfirmTextView = (EditText)mView.findViewById(R.id.userPasswordConfirmTextView);
-                final EditText mobileNumberTextView = (EditText)mView.findViewById(R.id.mobileNumberTextView);
+                    final Button signUpButton = (Button) mView.findViewById(R.id.signUpButton2);
+                    final EditText userUsernameTextView = (EditText) mView.findViewById(R.id.userUsernameTextView);
+                    final EditText userEmailTextView = (EditText) mView.findViewById(R.id.userEmailTextView);
+                    final EditText userPasswordTextView = (EditText) mView.findViewById(R.id.userPasswordTextView);
+                    final EditText userPasswordConfirmTextView = (EditText) mView.findViewById(R.id.userPasswordConfirmTextView);
+                    final EditText mobileNumberTextView = (EditText) mView.findViewById(R.id.mobileNumberTextView);
 
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
 
-                signUpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(ParseUser.getCurrentUser() == null) {
-                            //checks that all forms are properly filled before signUpButton action happens
-                            if (!(userUsernameTextView.getText().toString().matches("")
-                                    || mobileNumberTextView.getText().toString().matches("")
-                                    || userEmailTextView.getText().toString().matches("")
-                                    || userPasswordTextView.getText().toString().matches("")
-                                    || userPasswordConfirmTextView.getText().toString().matches(""))) {
-                                if (userPasswordTextView.getText().toString().matches(userPasswordConfirmTextView.getText().toString())) {
-                                    savePatientsDetails(userUsernameTextView.getText().toString(), userEmailTextView.getText().toString(), userPasswordTextView.getText().toString(), mobileNumberTextView.getText().toString());
-                                    //dialog.dismiss();
+                    signUpButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (ParseUser.getCurrentUser() == null) {
+                                //checks that all forms are properly filled before signUpButton action happens
+                                if (!(userUsernameTextView.getText().toString().matches("")
+                                        || mobileNumberTextView.getText().toString().matches("")
+                                        || userEmailTextView.getText().toString().matches("")
+                                        || userPasswordTextView.getText().toString().matches("")
+                                        || userPasswordConfirmTextView.getText().toString().matches(""))) {
+                                    if (userPasswordTextView.getText().toString().matches(userPasswordConfirmTextView.getText().toString())) {
+                                        savePatientsDetails(userUsernameTextView.getText().toString(), userEmailTextView.getText().toString(), userPasswordTextView.getText().toString(), mobileNumberTextView.getText().toString());
+                                        //dialog.dismiss();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Passwords Do Not Match", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    Toast.makeText(getActivity(), "Passwords Do Not Match", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Please Complete Form", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(getActivity(), "Please Complete Form", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
-                //to show the terms of use pop-up dialog
-                dialog.show();
+                    });
+                    //to show the terms of use pop-up dialog
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Already Signed In as " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -277,45 +294,50 @@ public class SettingsFragment extends Fragment implements LocationListener {
         signUpDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                View mView = getLayoutInflater().inflate(R.layout.fragment_sign_up, null);
 
-                final Button signUpButton = (Button) mView.findViewById(R.id.signUpButton2);
-                final EditText userUsernameTextView = (EditText)mView.findViewById(R.id.userUsernameTextView);
-                final EditText userEmailTextView = (EditText)mView.findViewById(R.id.userEmailTextView);
-                final EditText userPasswordTextView = (EditText)mView.findViewById(R.id.userPasswordTextView);
-                final EditText userPasswordConfirmTextView = (EditText)mView.findViewById(R.id.userPasswordConfirmTextView);
-                final EditText mobileNumberTextView = (EditText)mView.findViewById(R.id.mobileNumberTextView);
+                if (ParseUser.getCurrentUser() == null) {
+                    final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                    View mView = getLayoutInflater().inflate(R.layout.fragment_sign_up, null);
 
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                    final Button signUpButton = (Button) mView.findViewById(R.id.signUpButton2);
+                    final EditText userUsernameTextView = (EditText) mView.findViewById(R.id.userUsernameTextView);
+                    final EditText userEmailTextView = (EditText) mView.findViewById(R.id.userEmailTextView);
+                    final EditText userPasswordTextView = (EditText) mView.findViewById(R.id.userPasswordTextView);
+                    final EditText userPasswordConfirmTextView = (EditText) mView.findViewById(R.id.userPasswordConfirmTextView);
+                    final EditText mobileNumberTextView = (EditText) mView.findViewById(R.id.mobileNumberTextView);
 
-                signUpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ParseUser.getCurrentUser() == null) {
-                            //checks that all forms are properly filled before signUpButton action happens
-                            if (!(userUsernameTextView.getText().toString().matches("")
-                                    || mobileNumberTextView.getText().toString().matches("")
-                                    || userEmailTextView.getText().toString().matches("")
-                                    || userPasswordTextView.getText().toString().matches("")
-                                    || userPasswordConfirmTextView.getText().toString().matches(""))) {
-                                if (userPasswordTextView.getText().toString().matches(userPasswordConfirmTextView.getText().toString())) {
-                                    saveDoctorsDetails(userUsernameTextView.getText().toString(), userEmailTextView.getText().toString(), userPasswordTextView.getText().toString(), mobileNumberTextView.getText().toString());
-                                    //dialog.dismiss();
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+
+                    signUpButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (ParseUser.getCurrentUser() == null) {
+                                //checks that all forms are properly filled before signUpButton action happens
+                                if (!(userUsernameTextView.getText().toString().matches("")
+                                        || mobileNumberTextView.getText().toString().matches("")
+                                        || userEmailTextView.getText().toString().matches("")
+                                        || userPasswordTextView.getText().toString().matches("")
+                                        || userPasswordConfirmTextView.getText().toString().matches(""))) {
+                                    if (userPasswordTextView.getText().toString().matches(userPasswordConfirmTextView.getText().toString())) {
+                                        saveDoctorsDetails(userUsernameTextView.getText().toString(), userEmailTextView.getText().toString(), userPasswordTextView.getText().toString(), mobileNumberTextView.getText().toString());
+                                        //dialog.dismiss();
+                                    } else {
+                                        Toast.makeText(getActivity(), "Passwords Do Not Match", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    Toast.makeText(getActivity(), "Passwords Do Not Match", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Please Complete Form", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(getActivity(), "Please Complete Form", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
-                //to show the terms of use pop-up dialog
-                dialog.show();
+                    });
+                    //to show the terms of use pop-up dialog
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Already Signed In as " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return v;
@@ -344,15 +366,15 @@ public class SettingsFragment extends Fragment implements LocationListener {
             doctor.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        Toast.makeText(getActivity(), "Doctor Account Created", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Doctor Account Created", Toast.LENGTH_SHORT).show();
                         //redirect to the next fragment.
                     } else {
-                        Toast.makeText(getActivity(), "Error Occured "+e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Error Occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -370,14 +392,14 @@ public class SettingsFragment extends Fragment implements LocationListener {
             patient.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        Toast.makeText(getActivity(), "Patient Account Created", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Patient Account Created", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), "Error Occured " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Error Occured " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

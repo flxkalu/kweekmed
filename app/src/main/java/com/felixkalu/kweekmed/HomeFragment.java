@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.felixkalu.heart_rate_monitor.HeartRateMonitor;
 import com.felixkalu.simplealarms.ui.MainFragment;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,33 +110,38 @@ public class HomeFragment extends Fragment implements LocationListener {
         symptomsCheckerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Note", "symptoms checker clicked");
-                EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                fragmentTransaction.replace(R.id.main_frame, enterSymptomInfoFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                if(ParseUser.getCurrentUser()!=null) {
+                    EnterSymptomInfoFragment enterSymptomInfoFragment = new EnterSymptomInfoFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                    fragmentTransaction.replace(R.id.main_frame, enterSymptomInfoFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         possibleIssuesImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Note", "Possible Issues Clicked");
-                IssuesListFragment possibleIssuesFragment = new IssuesListFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                if (ParseUser.getCurrentUser() != null) {
+                    IssuesListFragment possibleIssuesFragment = new IssuesListFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                    fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         drugsAndMedsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("drugsAndMedsImageView", "Clicked!");
                 DrugsAndMedicationsFragment drugsAndMedicationsFragment = new DrugsAndMedicationsFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -147,12 +154,16 @@ public class HomeFragment extends Fragment implements LocationListener {
         findaDoctorImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DoctorsListFragment findDoctorFragment = new DoctorsListFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                fragmentTransaction.replace(R.id.main_frame, findDoctorFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                if (ParseUser.getCurrentUser() != null) {
+                    DoctorsListFragment findDoctorFragment = new DoctorsListFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                    fragmentTransaction.replace(R.id.main_frame, findDoctorFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -171,8 +182,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         heartRateMonitorImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HeartRateMonitor.class);
-                startActivity(intent);
+                if (ParseUser.getCurrentUser() != null) {
+                    Intent intent = new Intent(getActivity(), HeartRateMonitor.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -187,10 +202,10 @@ public class HomeFragment extends Fragment implements LocationListener {
                     intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                     startActivity(intent);
                 } catch (NullPointerException e) {
-                    Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_SHORT).show();
                     getFragmentManager().popBackStackImmediate();
                 } catch (Exception e) {
-                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
                     getFragmentManager().popBackStackImmediate();
                 }
             }
@@ -199,7 +214,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         homeSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -227,7 +242,7 @@ public class HomeFragment extends Fragment implements LocationListener {
             e.printStackTrace();
             throw new Exception("Can not create token (InvalidKeyException)");
         } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.i("Exception: ", e.getMessage());
         } finally {
             DownloadTask task = new DownloadTask();
@@ -278,15 +293,37 @@ public class HomeFragment extends Fragment implements LocationListener {
                 }
                 return result;
 
-            } catch (MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 Log.i("MalformedURLException ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
+                //Toast.MakeText can only be called in main thread, not background thread
+                //this is how to use it inside doInBackground
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } catch (final IOException e) {
                 Log.i("IOException ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (final RuntimeException e) {
                 Log.i("IOException ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (final Exception e) {
+                Log.i("IOException ", e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             return null;
         }
@@ -303,10 +340,10 @@ public class HomeFragment extends Fragment implements LocationListener {
                 Log.i("Token ", token);
             } catch (JSONException e) {
                 Log.i("Exception ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Log.i("Exception ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -89,7 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_profile :
                         mMainNav.setItemBackgroundResource(R.color.colorPrimary);
-                        setFragment(myProfileFragment);
+                        if(ParseUser.getCurrentUser()!=null) {
+                            setFragment(myProfileFragment);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Log In First", Toast.LENGTH_SHORT).show();
+                            getFragmentManager().popBackStackImmediate();
+                        }
                         return true;
 
                     case R.id.nav_settings:
@@ -110,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setFragment(Fragment fragment) {
+    public void setFragment(Fragment fragment) {
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -200,8 +205,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.logout:
                 ParseUser.logOut();
-                Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_LONG).show();
-                //the two lines of codes below refreshes the activity
+                Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_SHORT).show();
+                //redirect to Homefragment
+                setFragment(homeFragment);
                 return true;
             default:
                 return false;

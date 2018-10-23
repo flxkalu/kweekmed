@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-60dp"
             android:elevation="5dp"
-            android:padding="20dp"
+            android:padding="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/noprofilepicture" />
 
@@ -63,8 +63,8 @@
                 android:layout_alignTop="@+id/user_profile_name"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="-22dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginTop="-48dp"
+                android:layout_marginRight="4dp"
                 android:text="Update"
                 android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="50dp"
                 android:text="Viral Android"
                 android:textColor="#fff"
                 android:textSize="24sp"
@@ -83,15 +83,13 @@
                 android:id="@+id/verifyTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/textView"
-                android:layout_marginStart="143dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginEnd="126dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="0dp"
-                android:text="Verified User"
+                android:layout_below="@+id/user_profile_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="Verified or not"
                 android:textColor="@color/green"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -164,6 +162,7 @@
                 android:background="#f9f2f2"
                 android:elevation="4dp"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:padding="20dp"
                 android:textColor="@color/fontcolor" />
 
@@ -175,6 +174,7 @@
                 android:background="#f2f6fc"
                 android:elevation="4dp"
                 android:hint="Confirm Password"
+                android:inputType="textPassword"
                 android:padding="20dp"
                 android:textColor="@color/fontcolor" />
 

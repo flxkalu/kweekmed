@@ -55,7 +55,7 @@ public class EnterSymptomInfoFragment extends Fragment {
                     fragmentTransaction.replace(R.id.main_frame, symptomsCheckerFragment);
                     fragmentTransaction.commit();
                 } else {
-                    Toast.makeText(getActivity(), "Please Enter Your Age", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Please Enter Your Age", Toast.LENGTH_SHORT).show();
                 }
             }
         });

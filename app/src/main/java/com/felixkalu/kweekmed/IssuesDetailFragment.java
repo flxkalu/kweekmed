@@ -100,8 +100,14 @@ public class IssuesDetailFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
-            } catch (Exception e) {
-                Toast.makeText(getActivity().getApplicationContext(), "Could Not Find anything", Toast.LENGTH_LONG);
+            } catch (final Exception e) {
+                //Toast.MakeText can only be called in main thread, not background thread
+                //this is how to use it inside doInBackground
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             return null;
         }

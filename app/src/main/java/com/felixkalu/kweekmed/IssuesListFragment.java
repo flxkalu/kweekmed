@@ -89,10 +89,22 @@ public class IssuesListFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
-            } catch (RuntimeException e) {
-                Toast.makeText(getActivity(), "Could Not Find anything", Toast.LENGTH_LONG);
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), "Could Not Find anything", Toast.LENGTH_LONG);
+            } catch (final RuntimeException e) {
+                //Toast.MakeText can only be called in main thread, not background thread
+                //this is how to use it inside doInBackground
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (final Exception e) {
+                //Toast.MakeText can only be called in main thread, not background thread
+                //this is how to use it inside doInBackground
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             return null;
         }
@@ -147,9 +159,9 @@ public class IssuesListFragment extends Fragment {
 
             } catch (JSONException e) {
                 Log.i("MESSAGE 3: ", e.toString());
-                Toast.makeText(getActivity(),"Error with JSON " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Error with JSON " + e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
