@@ -10,12 +10,17 @@ package com.felixkalu.kweekmed;
 
 import android.app.Application;
 import android.util.Log;
+
+import com.cloudinary.android.MediaManager;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class StarterApplication extends Application {
@@ -34,6 +39,13 @@ public class StarterApplication extends Application {
             .server("http://18.191.252.34:80/parse/")
             .build()
     );
+
+    //without this block of code cloudinary would not work.
+    Map config = new HashMap();
+    config.put("cloud_name", "the-software-gurus-place");
+    config.put("api_key", "544298666218839");
+    MediaManager.init(this, config);
+
 
     //The commented code below is used to check and confirm that the app is correctly connected to parse server. it is commented because we have confirmed that the connection is working as it should.
     // To revise and remember how this whole thing is done, watch section8, Lecture 128.

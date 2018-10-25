@@ -43,6 +43,9 @@ dependencies {
     //for circlar imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //for cloudinary image upload
+    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.24.0'
+
 }
 repositories {
     mavenCentral()

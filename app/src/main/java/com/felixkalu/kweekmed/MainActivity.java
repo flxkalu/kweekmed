@@ -2,6 +2,7 @@ package com.felixkalu.kweekmed;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout mMainFrame;
 
     private HomeFragment homeFragment;
+    private HelpFragment helpFragment;
     private NewsFragment newsFragment;
     private SettingsFragment settingsFragment;
     private MyProfileFragment myProfileFragment;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.CALL_PHONE,
             Manifest.permission.CAMERA,
             Manifest.permission.WAKE_LOCK,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
     };
 
     @Override
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         newsFragment = new NewsFragment();
+        helpFragment = new HelpFragment();
         myProfileFragment = new MyProfileFragment();
         settingsFragment  = new SettingsFragment();
 
@@ -84,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
                     //if home button is selected, change the color of the icon to primary color
                     case R.id.nav_home :
                         mMainNav.setItemBackgroundResource(R.color.colorPrimary);
+                        //clear the activity stack anytime the home button is clicked...
+                        //This helps make sure that after the user gets to the home page and presses..
+                        //the home button it would not go back again after getting to the homepage...
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         setFragment(homeFragment);
                         return true;
 
@@ -201,11 +211,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.help :
-                //link to the Help Page
+                setFragment(helpFragment);
                 return true;
             case R.id.logout:
                 ParseUser.logOut();
                 Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_SHORT).show();
+                //clear the activitystack
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 //redirect to Homefragment
                 setFragment(homeFragment);
                 return true;

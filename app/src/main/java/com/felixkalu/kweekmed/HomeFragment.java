@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -76,7 +77,6 @@ public class HomeFragment extends Fragment implements LocationListener {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         getActivity().setTitle("Home");
-
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             //if the permission is not already granted, request for permission else just get the last known location of the device

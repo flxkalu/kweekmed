@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/lightBlue">
+    android:layout_height="wrap_content">
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/contentTextView"
@@ -16,6 +19,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:singleLine="false"
+        android:textColor="@color/redfonts"
         android:text="@string/termsofuse"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,10 +35,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/lightBlue"
         android:text="Done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentTextView" />
 
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

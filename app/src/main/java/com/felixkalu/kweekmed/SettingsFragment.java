@@ -123,14 +123,13 @@ public class SettingsFragment extends Fragment implements LocationListener {
             }
         });
 
-
         feedBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(ParseUser.getCurrentUser()!=null) {
                     startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:to@gmail.com")));
                 } else {
-                    Toast.makeText(getActivity(), "Please Sign In Before sending Feedback!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Sign In First!", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -285,12 +284,11 @@ public class SettingsFragment extends Fragment implements LocationListener {
                     dialog.show();
                 } else {
                     Toast.makeText(getActivity(), "Already Signed In as " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
 
-        //signupfor doctors textview
+        //Signup doctors textview
         signUpDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,12 +360,19 @@ public class SettingsFragment extends Fragment implements LocationListener {
             doctor.put("primaryMobileNumber", primaryMobileNumber);
             doctor.put("doctorsLocation", parseGeoPoint);
             doctor.put("userType", "doctor");
+            doctor.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
 
             doctor.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        Toast.makeText(getActivity(), "Doctor Account Created", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Sign Up complete", Toast.LENGTH_SHORT).show();
                         //redirect to the next fragment.
+                        MyProfileFragment fragment = new MyProfileFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                        fragmentTransaction.replace(R.id.main_frame, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
                     } else {
                         Toast.makeText(getActivity(), "Error Occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -388,11 +393,19 @@ public class SettingsFragment extends Fragment implements LocationListener {
             patient.setPassword(password);
             patient.put("primaryMobileNumber", primaryMobileNumber);
             patient.put("userType", "patient");
+            patient.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
 
             patient.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        Toast.makeText(getActivity(), "Patient Account Created", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Sign Up Complete", Toast.LENGTH_SHORT).show();
+                        //redirect to MyProfile fragment
+                        MyProfileFragment fragment = new MyProfileFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                        fragmentTransaction.replace(R.id.main_frame, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
                     } else {
                         Toast.makeText(getActivity(), "Error Occured " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }

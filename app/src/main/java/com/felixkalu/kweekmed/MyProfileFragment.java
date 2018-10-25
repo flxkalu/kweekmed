@@ -1,8 +1,16 @@
 package com.felixkalu.kweekmed;
 
-
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -11,22 +19,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+import com.cloudinary.utils.ObjectUtils;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.microedition.khronos.egl.EGLDisplay;
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -34,9 +45,10 @@ import javax.microedition.khronos.egl.EGLDisplay;
  */
 public class MyProfileFragment extends Fragment {
 
-    String userProfileName, name, surname, username,
-            email, phoneNumber, password, confirmPassword;
-
+    //get the current user from parse server
+    ParseUser user = ParseUser.getCurrentUser();
+    ProgressBar profilePictureProgressBar;
+    ImageView user_profile_photo;
 
     public MyProfileFragment() {
         // Required empty public constructor
@@ -50,13 +62,19 @@ public class MyProfileFragment extends Fragment {
 
         getActivity().setTitle("My Profile");
 
-        final ParseUser user = ParseUser.getCurrentUser();
-
         if(user!=null) {
 
             //to get all the views
             TextView verifyTextView = (TextView) v.findViewById(R.id.verifyTextView);
             TextView user_profile_name = (TextView) v.findViewById(R.id.user_profile_name);
+
+            profilePictureProgressBar = (ProgressBar)v.findViewById(R.id.profilePictureProgressBar);
+            profilePictureProgressBar.setVisibility(View.INVISIBLE);
+            //change color red if the version of the OS is > Lollipop
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                profilePictureProgressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+                profilePictureProgressBar.setMax(100);
+            }
 
             final EditText profileNameEditText = (EditText) v.findViewById(R.id.profileNameEditText);
             final EditText profileSurnameEditText = (EditText) v.findViewById(R.id.profileSurnameEditText);
@@ -66,7 +84,7 @@ public class MyProfileFragment extends Fragment {
             final EditText profilePasswordEditText = (EditText) v.findViewById(R.id.profilePasswordEditText);
             final EditText profileConfirmPasswordEditText = (EditText) v.findViewById(R.id.profileConfirmPasswordEditText);
 
-            ImageView user_profile_photo = (ImageView) v.findViewById(R.id.user_profile_photo);
+            user_profile_photo = (ImageView) v.findViewById(R.id.user_profile_photo);
             ImageView uploadLogoImageView = (ImageView) v.findViewById(R.id.uploadLogoImageView);
 
             RelativeLayout profile_layout = (RelativeLayout) v.findViewById(R.id.profile_layout);
@@ -88,17 +106,20 @@ public class MyProfileFragment extends Fragment {
                 verifyTextView.setText("N/A");
             }
 
-
             //setting the different views witht the right information from parse server
-            user_profile_name.setText(user.get("name").toString()+" "+user.get("surname").toString());
-            profileNameEditText.setText(user.get("name").toString());
-            profileSurnameEditText.setText(user.get("surname").toString());
-            profileUsernameEditText.setText(user.getUsername().toString());
-            profileEmailEditText.setText(user.getEmail());
-            profilePhoneNumberEditText.setText(user.get("primaryMobileNumber").toString());
-
-
-            Picasso.get().load(user.get("photoLink").toString()).resize(120, 120).into(user_profile_photo);
+            try {
+                user_profile_name.setText(user.getUsername());
+                profileNameEditText.setText(user.get("name").toString());
+                profileSurnameEditText.setText(user.get("surname").toString());
+                profileUsernameEditText.setText(user.getUsername().toString());
+                profileEmailEditText.setText(user.getEmail());
+                profilePhoneNumberEditText.setText(user.get("primaryMobileNumber").toString());
+                Picasso.get().load(user.get("photoLink").toString()).resize(120, 120).into(user_profile_photo);
+            } catch (NullPointerException e) {
+                Toast.makeText(getActivity(),"Complete Your Registration",Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
 
             //For updating profile info
             uploadLogoImageView.setOnClickListener(new View.OnClickListener() {
@@ -146,9 +167,123 @@ public class MyProfileFragment extends Fragment {
                 }
             });
 
+            user_profile_photo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if(getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                        } else {
+                            getPhoto();
+                        }
+                        //if we are not in marshMellow?
+                    } else {
+                        getPhoto();
+                    }
+                }
+            });
         } else {
             Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+            //redirect to home page
+            HomeFragment fragment = new HomeFragment();
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            fragmentTransaction.replace(R.id.main_frame, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
         return v;
+    }
+
+    //this is called when user taps on the profile picture for uploading new profile picture.
+    public void getPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        //for startActivityForResult, the second parameter, requestCode is used to identify this particular intent
+        startActivityForResult(intent, 1);
+    }
+
+    //when the user has given us permission,
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 1) {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPhoto();
+            }
+        }
+    }
+
+    //I believe this method is called anytime the startActivityForResult() method is called.
+    //It uses the request code which is sent from startActivityForResult()
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null) {
+
+            //this gets the link to our image and assigns it to selectedImage Uri
+            Uri selectedImage = data.getData();
+                try {
+                    String requestId = MediaManager.get().upload(selectedImage)
+                             .unsigned("vpzgkhsb")
+                             .option("resource_type", "image")
+                             .option("folder", "kweekmed/profilepictures/")
+                             .callback(new UploadCallback() {
+                                 @Override
+                                 public void onStart(String requestId) {
+                                     Log.i("Upload: ", "Started!");
+                                     user_profile_photo.setVisibility(View.INVISIBLE);
+                                     profilePictureProgressBar.setProgress(0);
+                                     profilePictureProgressBar.setVisibility(View.VISIBLE);
+                                 }
+
+                                 @Override
+                                 public void onProgress(String requestId, long bytes, long totalBytes) {
+                                     //Double progress = (double) bytes/totalBytes;
+                                     profilePictureProgressBar.setProgress((int) Math.round((bytes/totalBytes)*100));
+                                 }
+
+                                 @Override
+                                 public void onSuccess(String requestId, Map resultData) {
+                                    Log.i("Upload is: ", "Successful "+ resultData.toString());
+                                    profilePictureProgressBar.setVisibility(View.INVISIBLE);
+                                     //prepare image link to be saved in parse server database
+                                     user.put("photoLink", resultData.get("url"));
+                                     try {
+                                         user.save();
+                                     } catch (ParseException e) {
+                                         Toast.makeText(getActivity(), "Error "+e.getMessage()+" Try again", Toast.LENGTH_SHORT ).show();
+                                     } catch (Exception e) {
+                                         Toast.makeText(getActivity(), "Error "+e.getMessage()+" Try again", Toast.LENGTH_SHORT ).show();
+                                     } finally {
+                                         //refresh the current fragment..
+                                         FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                         ft.detach(MyProfileFragment.this).attach(MyProfileFragment.this).commit();
+
+                                         Toast.makeText(getActivity(), "Profile Picture Changed!", Toast.LENGTH_SHORT).show();
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(String requestId, ErrorInfo error) {
+                                     //refresh the current fragment..
+                                     FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                     ft.detach(MyProfileFragment.this).attach(MyProfileFragment.this).commit();
+
+                                     Toast.makeText(getActivity(), "Error uploading Profile Pic, Try again", Toast.LENGTH_SHORT).show();
+                                 }
+
+                                 @Override
+                                 public void onReschedule(String requestId, ErrorInfo error) {
+                                     Log.i("NOTE: ", "To be done later");
+                                 }
+                             })
+                            .dispatch();
+
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+        }
     }
 }
