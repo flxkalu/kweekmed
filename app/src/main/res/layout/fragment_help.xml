@@ -20,7 +20,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/HowToUse"
-            android:textColor="@color/fontcolor"
+            android:textColor="@android:color/black"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

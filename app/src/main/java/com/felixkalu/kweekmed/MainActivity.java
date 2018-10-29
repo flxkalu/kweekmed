@@ -4,18 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
+
+    ParseUser user = ParseUser.getCurrentUser();
 
     private HomeFragment homeFragment;
     private HelpFragment helpFragment;
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(item.getItemId()) {
                     //if home button is selected, change the color of the icon to primary color
-                    case R.id.nav_home :
+                    case R.id.nav_home:
                         mMainNav.setItemBackgroundResource(R.color.colorPrimary);
                         //clear the activity stack anytime the home button is clicked...
                         //This helps make sure that after the user gets to the home page and presses..
@@ -97,15 +95,16 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(homeFragment);
                         return true;
 
-                    case R.id.nav_profile :
+                    case R.id.nav_profile:
                         mMainNav.setItemBackgroundResource(R.color.colorPrimary);
-                        if(ParseUser.getCurrentUser()!=null) {
+                        if(user!=null) {
                             setFragment(myProfileFragment);
+                            return true;
                         } else {
                             Toast.makeText(MainActivity.this, "Log In First", Toast.LENGTH_SHORT).show();
-                            getFragmentManager().popBackStackImmediate();
+                            setFragment(homeFragment);
+                            return false;
                         }
-                        return true;
 
                     case R.id.nav_settings:
                         mMainNav.setItemBackgroundResource(R.color.colorPrimary);
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void setFragment(Fragment fragment) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -215,11 +213,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout:
                 ParseUser.logOut();
                 Toast.makeText(this, "You Have Successfully Logged Out", Toast.LENGTH_SHORT).show();
-                //clear the activitystack
+                //clear the activityStack
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                //redirect to Homefragment
+                //redirect to HomeFragment
                 setFragment(homeFragment);
                 return true;
             default:

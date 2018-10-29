@@ -84,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Full Name"
+            android:textColor="@color/fontcolor"
             android:textSize="16sp" />
 
         <TextView
@@ -91,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Specialty"
+            android:textColor="@color/fontcolor"
             android:textSize="16sp" />
 
         <TextView
@@ -98,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Experience"
+            android:textColor="@color/fontcolor"
             android:textSize="16sp" />
 
         <TextView
@@ -105,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
+            android:textColor="@color/fontcolor"
             android:textSize="16sp" />
     </LinearLayout>
 
