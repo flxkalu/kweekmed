@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setFragment(Fragment fragment) {
-
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             //this line of code is used to animate fragment transitions

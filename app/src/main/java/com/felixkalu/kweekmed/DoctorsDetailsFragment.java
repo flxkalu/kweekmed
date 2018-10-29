@@ -88,7 +88,6 @@ public class DoctorsDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 v.startAnimation(buttonClick);
-
                 Intent intent = new Intent(getActivity(), PatientMapsActivity.class);
                 intent.putExtra("doctorsLatitude", doctorsLatitude);
                 intent.putExtra("doctorsLongitude", doctorsLongitude);

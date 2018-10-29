@@ -380,6 +380,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
             });
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
@@ -413,6 +414,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
             });
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 

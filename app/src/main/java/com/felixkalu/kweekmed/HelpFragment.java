@@ -25,9 +25,6 @@ public class HelpFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_help, container, false);
 
 
-
-
-
         return v;
     }
 

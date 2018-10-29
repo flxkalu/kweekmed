@@ -276,7 +276,7 @@ public class MyProfileFragment extends Fragment {
 
                                  @Override
                                  public void onReschedule(String requestId, ErrorInfo error) {
-                                     Log.i("NOTE: ", "To be done later");
+
                                  }
                              })
                             .dispatch();

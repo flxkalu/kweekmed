@@ -87,24 +87,11 @@ public class IssuesListFragment extends Fragment {
                 }
                 Log.i("From doInBackground:", result);
                 return result;
-                //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
             } catch (final RuntimeException e) {
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                e.printStackTrace();
             } catch (final Exception e) {
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                e.printStackTrace();
             }
             return null;
         }
@@ -146,7 +133,7 @@ public class IssuesListFragment extends Fragment {
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                             Bundle args = new Bundle();
 
-                            //for sending the content of the clicked listview to the next Fragment where it is displayed in detail.
+                            //for sending the content of the clicked listView to the next Fragment where it is displayed in detail.
                             args.putString("issueId", issueIds.get(position));
 
                             possibleIssuesDetailFragment.setArguments(args);
@@ -156,14 +143,11 @@ public class IssuesListFragment extends Fragment {
                             fragmentTransaction.commit();
                     }
                 });
-
             } catch (JSONException e) {
-                Log.i("MESSAGE 3: ", e.toString());
-                Toast.makeText(getActivity(),"Error with JSON " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             } catch (Exception e) {
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
         }
     }
-
 }

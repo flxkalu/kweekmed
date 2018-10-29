@@ -92,7 +92,6 @@ public class HomeFragment extends Fragment implements LocationListener {
             setToken();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         //initializing elements
@@ -202,10 +201,10 @@ public class HomeFragment extends Fragment implements LocationListener {
                     intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                     startActivity(intent);
                 } catch (NullPointerException e) {
-                    Toast.makeText(getActivity(), "We could not get your location. Please Try again! ", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                     getFragmentManager().popBackStackImmediate();
                 } catch (Exception e) {
-                    Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                     getFragmentManager().popBackStackImmediate();
                 }
             }
@@ -234,16 +233,11 @@ public class HomeFragment extends Fragment implements LocationListener {
             computedHashString = encoder.encode(result);
 
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            throw new Exception("Can not create token (NoSuchAlgorithmException)");
         } catch (InvalidKeyException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            throw new Exception("Can not create token (InvalidKeyException)");
         } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.i("Exception: ", e.getMessage());
+            e.printStackTrace();
         } finally {
             DownloadTask task = new DownloadTask();
             task.execute();
@@ -293,37 +287,14 @@ public class HomeFragment extends Fragment implements LocationListener {
                 }
                 return result;
 
-            } catch (final MalformedURLException e) {
-                Log.i("MalformedURLException ", e.getMessage());
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } catch (final IOException e) {
-                Log.i("IOException ", e.getMessage());
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } catch (final RuntimeException e) {
-                Log.i("IOException ", e.getMessage());
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } catch (final Exception e) {
-                Log.i("IOException ", e.getMessage());
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }
@@ -339,11 +310,9 @@ public class HomeFragment extends Fragment implements LocationListener {
                 token = jsonObject.getString("Token");
                 Log.i("Token ", token);
             } catch (JSONException e) {
-                Log.i("Exception ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             } catch (Exception e) {
-                Log.i("Exception ", e.getMessage());
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
         }
     }

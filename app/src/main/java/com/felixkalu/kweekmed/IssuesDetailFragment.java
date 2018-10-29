@@ -43,7 +43,7 @@ public class IssuesDetailFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_possible_issues_detail, container, false);
 
-        getActivity().setTitle("Issue Details");
+        getActivity().setTitle("Issue Details: ");
 
         descriptionTextView = (TextView)v.findViewById(R.id.doctorsDetailsDescriptionTextView);
         medicalConditiontextView = (TextView)v.findViewById(R.id.medicalConditiontextView);
@@ -100,14 +100,8 @@ public class IssuesDetailFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
-            } catch (final Exception e) {
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            } catch (Exception e) {
+               e.printStackTrace();
             }
             return null;
         }
@@ -130,18 +124,48 @@ public class IssuesDetailFragment extends Fragment {
                 String synonyms = jsonObject.getString("Synonyms");
                 String treatmentDescription = jsonObject.getString("TreatmentDescription");
 
-                descriptionTextView.setText(description);
-                medicalConditiontextView.setText(medicalCondition);
-                nameTextview.setText(name);
-                possibleSymptomsTextView.setText(possibleSymptoms);
-                profNametextView.setText(profName);
-                synonymsTextView.setText(synonyms);
-                treatmentDescriptionTextView.setText(treatmentDescription);
 
-                Log.i("Description: ", description);
+                if(description.equals("null")) {
+                    descriptionTextView.setText("Not Available");
+                } else {
+                    descriptionTextView.setText(description);
+                }
+                if(medicalCondition.equals("null")) {
+                    medicalConditiontextView.setText("Not Available");
+                } else {
+                    medicalConditiontextView.setText(medicalCondition);
+                }
+                if(name.equals("null")) {
+                    nameTextview.setText("Not Available");
+                } else {
+                    nameTextview.setText(name);
+                    getActivity().setTitle("Issue Details: " +name);
+                }
+                if(possibleSymptoms.equals("null")) {
+                    possibleSymptomsTextView.setText("Not Available");
+                } else {
+                    possibleSymptomsTextView.setText(possibleSymptoms);
+                }
+                if(profName.equals("null")) {
+                    synonymsTextView.setText("Not Available");
+                } else {
+                    profNametextView.setText(profName);
+                }
+                if(synonyms.equals("null")) {
+                    synonymsTextView.setText("Not Available");
+                } else {
+                    synonymsTextView.setText(synonyms);
+                }
+                if(treatmentDescription.equals("null")) {
+                    synonymsTextView.setText("Not Available");
+                } else {
+                    treatmentDescriptionTextView.setText(treatmentDescription);
+                }
 
             } catch (JSONException e) {
-                Log.i("MESSAGE 3: ", e.toString());
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

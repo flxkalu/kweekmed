@@ -144,17 +144,19 @@ public class DoctorsListFragment extends Fragment implements SearchView.OnQueryT
 
                         listView.setTextFilterEnabled(true);
                     } catch (NullPointerException ex) {
-                        Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     } catch (Exception ex) {
-                        Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
                 }
             });
         } catch (NullPointerException ex) {
                 Toast.makeText(getActivity(), "Couldn't get your Location "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                ex.printStackTrace();
                 getFragmentManager().popBackStackImmediate();
         } catch (Exception ex) {
                 Toast.makeText(getActivity(), "Error "+ex.getMessage(), Toast.LENGTH_SHORT).show();
+                ex.printStackTrace();
                 getFragmentManager().popBackStackImmediate();
         }
 

@@ -118,22 +118,10 @@ public class DiagnosisFragment extends Fragment {
                 return result;
                 //the catch phrase will display this toast if the city name does not exist on the openWeather api
 
-            } catch (final RuntimeException e) {
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } catch (final Exception e) {
-                //Toast.MakeText can only be called in main thread, not background thread
-                //this is how to use it inside doInBackground
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            } catch (RuntimeException e) {
+               e.printStackTrace();
+            } catch (Exception e) {
+               e.printStackTrace();
             }
             return null;
         }
@@ -160,6 +148,7 @@ public class DiagnosisFragment extends Fragment {
                         String specialisationName ="You need:";
                         String issueName = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Name");
                         String accuracy = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("Accuracy");
+                        String issueId = jsonArray.getJSONObject(i).getJSONObject("Issue").getString("ID");
 
                         Log.i("IssueName: ", issueName);
                         Log.i("Accuracy: ", accuracy);
@@ -178,7 +167,7 @@ public class DiagnosisFragment extends Fragment {
                         }
 
                         specialisationName = specialisationName.substring(0, specialisationName.length() - 1) + '.';
-                        diagnosis.add(new DiagnosisModel(issueName, accuracy, specialisationName));
+                        diagnosis.add(new DiagnosisModel(issueName, accuracy, specialisationName, issueId));
                     }
 
                     progressBar.setVisibility(View.GONE);
@@ -188,19 +177,34 @@ public class DiagnosisFragment extends Fragment {
 
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                            DiagnosisModel model = diagnosis.get(i);
-                            diagnosis.set(i, model);
+                            DiagnosisModel model = diagnosis.get(position);
+                            diagnosis.set(position, model);
 
                             adapter.updateRecords(diagnosis);
+
+                            Log.i("diagnosis fragment: ", diagnosis.get(position).issueId);
+
+                            IssuesDetailFragment possibleIssuesDetailFragment = new IssuesDetailFragment();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            Bundle args = new Bundle();
+
+                            //for sending the content of the clicked listview to the next Fragment where it is displayed in detail.
+                            args.putString("issueId", diagnosis.get(position).issueId);
+
+                            possibleIssuesDetailFragment.setArguments(args);
+                            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                            fragmentTransaction.replace(R.id.main_frame, possibleIssuesDetailFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                         }
                     });
                 }
             } catch(JSONException e) {
-                Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             } catch (Exception e) {
-                Toast.makeText(getActivity(), "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
         }
     }
@@ -216,8 +220,6 @@ public class DiagnosisFragment extends Fragment {
         if(ids.endsWith(",")) {
             ids = ids.substring(0, ids.length() - 1) + "";
         }
-        Log.i("ID after work", ids);
-
         return ids;
     }
 }

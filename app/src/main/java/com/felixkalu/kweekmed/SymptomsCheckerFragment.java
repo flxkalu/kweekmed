@@ -220,8 +220,9 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
                 });
 
             } catch (JSONException e) {
-                Log.i("MESSAGE 3: ", e.toString());
-                Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_SHORT).show();
+                Log.i("JSONException Error: ", e.toString());
+            } catch (Exception e) {
+                Log.i("Exception Error: ", e.toString());
             }
         }
     }
