@@ -223,7 +223,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         homeSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

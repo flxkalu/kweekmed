@@ -66,7 +66,7 @@ public class MyProfileFragment extends Fragment {
 
             //to get all the views
             TextView verifyTextView = (TextView) v.findViewById(R.id.verifyTextView);
-            TextView user_profile_name = (TextView) v.findViewById(R.id.user_profile_name);
+            final TextView user_profile_name = (TextView) v.findViewById(R.id.user_profile_name);
 
             profilePictureProgressBar = (ProgressBar)v.findViewById(R.id.profilePictureProgressBar);
             profilePictureProgressBar.setVisibility(View.INVISIBLE);
@@ -83,6 +83,7 @@ public class MyProfileFragment extends Fragment {
             final EditText profilePhoneNumberEditText = (EditText) v.findViewById(R.id.profilePhoneNumberEditText);
             final EditText profilePasswordEditText = (EditText) v.findViewById(R.id.profilePasswordEditText);
             final EditText profileConfirmPasswordEditText = (EditText) v.findViewById(R.id.profileConfirmPasswordEditText);
+            final EditText profileAgeEditText = (EditText)v.findViewById(R.id.ageEditText);
 
             user_profile_photo = (ImageView) v.findViewById(R.id.user_profile_photo);
             ImageView uploadLogoImageView = (ImageView) v.findViewById(R.id.uploadLogoImageView);
@@ -113,6 +114,7 @@ public class MyProfileFragment extends Fragment {
                 profileSurnameEditText.setText(user.get("surname").toString());
                 profileUsernameEditText.setText(user.getUsername().toString());
                 profileEmailEditText.setText(user.getEmail());
+                profileAgeEditText.setText(user.get("age").toString());
                 profilePhoneNumberEditText.setText(user.get("primaryMobileNumber").toString());
                 Picasso.get().load(user.get("photoLink").toString()).resize(120, 120).into(user_profile_photo);
             } catch (NullPointerException e) {
@@ -132,9 +134,11 @@ public class MyProfileFragment extends Fragment {
                     String newPassword = profilePasswordEditText.getText().toString();
                     String newPasswordConfirm = profileConfirmPasswordEditText.getText().toString();
                     String newEmailAddress = profileEmailEditText.getText().toString();
+                    String newAge = profileAgeEditText.getText().toString();
 
                     user.put("name", newName);
                     user.put("surname", newSurname);
+                    user.put("age", newAge);
                     user.setUsername(newUserName);
                     user.put("primaryMobileNumber", newMobileNumber);
                     user.setEmail(newEmailAddress);
