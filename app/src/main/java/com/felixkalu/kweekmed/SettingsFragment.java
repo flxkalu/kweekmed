@@ -377,7 +377,7 @@ public class SettingsFragment extends Fragment {
                             public void done(ParseException e) {
                                 if (e == null) {
                                     Toast.makeText(getActivity(), "Sign Up complete", Toast.LENGTH_SHORT).show();
-                                    //redirect to the next fragment.
+                                    dialog.dismiss();
                                     MyProfileFragment fragment = new MyProfileFragment();
                                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                                     fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);

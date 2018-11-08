@@ -97,7 +97,6 @@ public class MyProfileFragment extends Fragment {
                 profile_layout.setBackgroundColor(Color.parseColor("#950110"));
             }
 
-
             //change the verify textview pending if the user is verified or not
             if(user.getBoolean("verify")==true) {
                 verifyTextView.setText("Verified");
@@ -107,12 +106,12 @@ public class MyProfileFragment extends Fragment {
                 verifyTextView.setText("N/A");
             }
 
-            //setting the different views witht the right information from parse server
+            //setting the different views with the right information from parse server
             try {
                 user_profile_name.setText(user.getUsername());
                 profileNameEditText.setText(user.get("name").toString());
                 profileSurnameEditText.setText(user.get("surname").toString());
-                profileUsernameEditText.setText(user.getUsername().toString());
+                profileUsernameEditText.setText(user.getUsername());
                 profileEmailEditText.setText(user.getEmail());
                 profileAgeEditText.setText(user.get("age").toString());
                 profilePhoneNumberEditText.setText(user.get("primaryMobileNumber").toString());
@@ -144,7 +143,7 @@ public class MyProfileFragment extends Fragment {
                     user.setEmail(newEmailAddress);
 
                     //for setting password
-                    if (!(newPassword.matches("") || newPasswordConfirm.matches(""))) {
+                    if (!(newPassword.matches("") || newPasswordConfirm.matches("") || newUserName.matches(""))) {
                         if (newPassword.matches(newPasswordConfirm)) {
                             user.setPassword(newPassword);
                             //to update user profile
@@ -166,7 +165,7 @@ public class MyProfileFragment extends Fragment {
                             Toast.makeText(getActivity(), "Passwords Don't Match", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Input Password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Username and password fields are mandatory for security reasons", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

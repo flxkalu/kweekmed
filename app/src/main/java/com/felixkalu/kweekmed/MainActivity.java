@@ -101,9 +101,8 @@ public class MainActivity extends AppCompatActivity {
                             setFragment(myProfileFragment);
                             return true;
                         } else {
-                            Toast.makeText(MainActivity.this, "Log In First", Toast.LENGTH_SHORT).show();
-                            setFragment(settingsFragment);
-                            return false;
+                           setFragment(settingsFragment);
+                           return false;
                         }
 
                     case R.id.nav_settings:

@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment {
     HttpURLConnection myURLConnection;
     String computedHashString;
 
-    private LocationManager locationManager;
     private Location deviceCurrentLocation;
 
     String userName = "flxkalu@hotmail.co.uk";
