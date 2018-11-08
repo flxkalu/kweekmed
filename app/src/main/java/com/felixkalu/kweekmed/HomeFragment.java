@@ -27,6 +27,9 @@ import android.widget.Toast;
 
 import com.felixkalu.heart_rate_monitor.HeartRateMonitor;
 import com.felixkalu.simplealarms.ui.MainFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -46,12 +49,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 import Decoder.BASE64Encoder;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements LocationListener {
+public class HomeFragment extends Fragment {
 
+    private FusedLocationProviderClient client;
 
     HttpURLConnection myURLConnection;
     String computedHashString;
@@ -78,14 +84,7 @@ public class HomeFragment extends Fragment implements LocationListener {
 
         getActivity().setTitle("Home");
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            //if the permission is not already granted, request for permission else just get the last known location of the device
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            } else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //to get the token by calling the setToken method.
         try {
@@ -194,21 +193,36 @@ public class HomeFragment extends Fragment implements LocationListener {
         pharmaciesImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    String location = Double.toString(deviceCurrentLocation.getLatitude()) + "," + Double.toString(deviceCurrentLocation.getLongitude());
-                    String url = "https://www.google.com/maps/search/pharmacy/@" + location + "z/data=!3m1!4b1";
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                    startActivity(intent);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    getFragmentManager().popBackStackImmediate();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    getFragmentManager().popBackStackImmediate();
+                if (ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission();
                 }
+                client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            Log.i("Location Success: ", location.toString());
+                            deviceCurrentLocation = location;
+                            try {
+                                String locationString = Double.toString(deviceCurrentLocation.getLatitude()) + "," + Double.toString(deviceCurrentLocation.getLongitude());
+                                String url = "https://www.google.com/maps/search/pharmacy/@" + locationString + "z/data=!3m1!4b1";
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                                startActivity(intent);
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                                getFragmentManager().popBackStackImmediate();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                getFragmentManager().popBackStackImmediate();
+                            }
+                        } else {
+                            Log.i("Location ", "not available");
+                        }
+                    }
+                });
             }
         });
+
 
         homeSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
@@ -244,17 +258,6 @@ public class HomeFragment extends Fragment implements LocationListener {
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        deviceCurrentLocation = location;
-        Log.i("Current Location", deviceCurrentLocation.toString());
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
-    @Override
-    public void onProviderEnabled(String provider) { }
-    @Override
-    public void onProviderDisabled(String provider) { }
 
     class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -317,18 +320,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         }
     }
 
-    //main activity gets all permissions but this is here just incase the permission is not granted from the main activity avoiding a crash.
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                    deviceCurrentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                }
-            }
-        }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }

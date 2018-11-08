@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -30,14 +33,18 @@ import com.parse.SignUpCallback;
 
 import org.w3c.dom.Text;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment implements LocationListener {
+public class SettingsFragment extends Fragment {
 
-    LocationManager locationManager;
+    private FusedLocationProviderClient client;
+
     Location currentLocation;
+    AlertDialog dialog;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -52,6 +59,8 @@ public class SettingsFragment extends Fragment implements LocationListener {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
         getActivity().setTitle("Settings");
+
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
 
         TextView signInTextView = (TextView)v.findViewById(R.id.signInTextView);
         TextView feedBackTextView = (TextView)v.findViewById(R.id.feedBackTextView);
@@ -76,7 +85,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                     Button singInButton = (Button) mView.findViewById(R.id.signInButton);
 
                     mBuilder.setView(mView);
-                    final AlertDialog dialog = mBuilder.create();
+                    dialog = mBuilder.create();
 
                     singInButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -147,7 +156,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                 contentTextView.setText(textContentForPopUp);
 
                 mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                dialog = mBuilder.create();
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -173,7 +182,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                 contentTextView.setText(textContentForPopUp);
 
                 mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                dialog = mBuilder.create();
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,7 +208,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                 contentTextView.setText(textContentForPopUp);
 
                 mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                dialog = mBuilder.create();
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -225,7 +234,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                 contentTextView.setText(textContentForPopUp);
 
                 mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                dialog = mBuilder.create();
 
                 doneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -305,7 +314,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                     final EditText mobileNumberTextView = (EditText) mView.findViewById(R.id.mobileNumberTextView);
 
                     mBuilder.setView(mView);
-                    final AlertDialog dialog = mBuilder.create();
+                    dialog = mBuilder.create();
 
                     signUpButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -341,47 +350,54 @@ public class SettingsFragment extends Fragment implements LocationListener {
         return v;
     }
 
-    public void saveDoctorsDetails(String userName, String email, String password, String primaryMobileNumber ) {
+    public void saveDoctorsDetails(final String userName, final String email, final String password, final String primaryMobileNumber ) {
 
-        //does a final check to ensure that currentLocation has something before trying to save
-        if (currentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) this);
-                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            }
+        if (ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
         }
-        try {
-            ParseUser doctor = new ParseUser();
-            ParseGeoPoint parseGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+        client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    Log.i("Location Success: ", location.toString());
+                    currentLocation = location;
+                    try {
+                        ParseUser doctor = new ParseUser();
+                        ParseGeoPoint parseGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
 
-            doctor.setUsername(userName);
-            doctor.setEmail(email);
-            doctor.setPassword(password);
-            doctor.put("primaryMobileNumber", primaryMobileNumber);
-            doctor.put("doctorsLocation", parseGeoPoint);
-            doctor.put("userType", "doctor");
-            doctor.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
+                        doctor.setUsername(userName);
+                        doctor.setEmail(email);
+                        doctor.setPassword(password);
+                        doctor.put("primaryMobileNumber", primaryMobileNumber);
+                        doctor.put("doctorsLocation", parseGeoPoint);
+                        doctor.put("userType", "doctor");
+                        doctor.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
 
-            doctor.signUpInBackground(new SignUpCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        Toast.makeText(getActivity(), "Sign Up complete", Toast.LENGTH_SHORT).show();
-                        //redirect to the next fragment.
-                        MyProfileFragment fragment = new MyProfileFragment();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                        fragmentTransaction.replace(R.id.main_frame, fragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                    } else {
-                        Toast.makeText(getActivity(), "Error Occured "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        doctor.signUpInBackground(new SignUpCallback() {
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Toast.makeText(getActivity(), "Sign Up complete", Toast.LENGTH_SHORT).show();
+                                    //redirect to the next fragment.
+                                    MyProfileFragment fragment = new MyProfileFragment();
+                                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                    fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                                    fragmentTransaction.replace(R.id.main_frame, fragment);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+                                } else {
+                                    Toast.makeText(getActivity(), "Error Occured " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
+                } else {
+                    Log.i("Location ", "not available");
                 }
-            });
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     public void savePatientsDetails(String usernmame, String email, String password, String primaryMobileNumber) {
@@ -400,7 +416,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
                 public void done(ParseException e) {
                     if (e == null) {
                         Toast.makeText(getActivity(), "Sign Up Complete", Toast.LENGTH_SHORT).show();
-                        //redirect to MyProfile fragment
+                        dialog.dismiss();
                         MyProfileFragment fragment = new MyProfileFragment();
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -418,25 +434,7 @@ public class SettingsFragment extends Fragment implements LocationListener {
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        //Log.i("Location", location.toString());
-        currentLocation = location;
-        Log.i("Current Location", currentLocation.toString());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }

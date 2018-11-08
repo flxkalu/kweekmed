@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -26,7 +28,8 @@ dependencies {
     //the next line of code is important for the implementation of the buttom navigation
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-maps:12.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -34,18 +37,15 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:gridlayout-v7:27.1.1'
     implementation files('libs/sun.misc.BASE64Decoder.jar')
-
     //for reminder
     implementation 'com.android.support:gridlayout-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     //for circlar imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-
     //for cloudinary image upload
-    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.24.0'
-
+    implementation 'com.cloudinary:cloudinary-android:1.24.0'
+    implementation 'com.google.android.gms:play-services:12.0.1'
 }
 repositories {
     mavenCentral()

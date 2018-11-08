@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             return true;
                         } else {
                             Toast.makeText(MainActivity.this, "Log In First", Toast.LENGTH_SHORT).show();
-                            setFragment(homeFragment);
+                            setFragment(settingsFragment);
                             return false;
                         }
 
