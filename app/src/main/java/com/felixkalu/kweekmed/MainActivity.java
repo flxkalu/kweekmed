@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseUser;
 
 import java.security.SecureRandom;
@@ -32,9 +36,12 @@ import javax.net.ssl.X509TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LocationManager locationManager;
+    //private LocationManager locationManager;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
+
+    private FusedLocationProviderClient client;
+    public Location currentLocation;
 
     ParseUser user = ParseUser.getCurrentUser();
 
@@ -59,13 +66,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
+        //locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
         trustEveryone();
 
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         } else {
         }
+
+
 
         mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
         mMainNav = (BottomNavigationView) findViewById(R.id.main_nav);

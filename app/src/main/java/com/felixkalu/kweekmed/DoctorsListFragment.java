@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.FindCallback;
@@ -31,6 +32,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,95 +84,99 @@ public class DoctorsListFragment extends Fragment implements SearchView.OnQueryT
 
         if(ActivityCompat.checkSelfPermission(getActivity(),ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
-        } client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    Log.i("Location Success: ", location.toString());
-                    deviceCurrentLocation = location;
-                    try {
-                        //setting up the query we need to search the parse server
-                        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Doctors");
-                        final ParseGeoPoint deviceLocation = new ParseGeoPoint(deviceCurrentLocation.getLatitude(), deviceCurrentLocation.getLongitude());
+        } else {
+            client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        Log.i("Location Success: ", location.toString());
+                        deviceCurrentLocation = location;
+                        try {
+                            //setting up the query we need to search the parse server
+                            ParseQuery<ParseUser> query = new ParseUser().getQuery();
+                            final ParseGeoPoint deviceLocation = new ParseGeoPoint(deviceCurrentLocation.getLatitude(), deviceCurrentLocation.getLongitude());
 
-                        //this line arranges the list according to the closest doctors around the device
-                        query.whereNear("doctorsLocation", deviceLocation);
-                        //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.
+                            //this ensures that it retrieves only doctors from parse user
+                            query.whereEqualTo("userType", "doctor");
+                            //this line arranges the list according to the closest doctors around the device
+                            query.whereNear("doctorsLocation", deviceLocation);
+                            //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.
 
-                        query.findInBackground(new FindCallback<ParseObject>() {
-                            @Override
-                            public void done(List<ParseObject> doctors, ParseException e) {
-                                //if the exception is null...
-                                if (e == null) {
-                                    Log.i("findInBackground", "Retrieved " + doctors.size() + " doctors");
-                                    if (doctors.size() > 0) {
-                                        for (ParseObject doctor : doctors) {
+                            query.findInBackground(new FindCallback<ParseUser>() {
+                                @Override
+                                public void done(List<ParseUser> doctors, ParseException e) {
+                                    //if the exception is null...
+                                    if (e == null) {
+                                        Log.i("findInBackground", "Retrieved " + doctors.size() + " doctors");
+                                        if (doctors.size() > 0) {
+                                            for (ParseObject doctor : doctors) {
 
-                                            //for storing doctors location in parseGeoPoint type
-                                            ParseGeoPoint doctorsLocation = (ParseGeoPoint) doctor.get("doctorsLocation");
+                                                //for storing doctors location in parseGeoPoint type
+                                                ParseGeoPoint doctorsLocation = (ParseGeoPoint) doctor.get("doctorsLocation");
 
-                                            //this two lines of code are used to convert the parselocations to miles.
-                                            Double distanceInMiles = deviceLocation.distanceInMilesTo((ParseGeoPoint) doctor.get("doctorsLocation"));
-                                            Double distanceOneDecimalPlace = (double) Math.round(distanceInMiles * 10) / 10;
+                                                //this two lines of code are used to convert the parselocations to miles.
+                                                Double distanceInMiles = deviceLocation.distanceInMilesTo((ParseGeoPoint) doctor.get("doctorsLocation"));
+                                                Double distanceOneDecimalPlace = (double) Math.round(distanceInMiles * 10) / 10;
 
-                                            String photoLink = doctor.get("photoLink").toString();
-                                            String name = doctor.get("name").toString();
-                                            String surname = doctor.get("surname").toString();
-                                            String sex = doctor.get("sex").toString();
-                                            String age = doctor.get("age").toString();
-                                            String specialty = doctor.get("specialty").toString();
-                                            String currentHospitalOfService = doctor.get("currentHospitalOfService").toString();
-                                            String yearsOfExperience = doctor.get("yearsOfExperience").toString();
-                                            String email = doctor.get("email").toString();
-                                            String primaryMobileNumber = doctor.get("primaryMobileNumber").toString();
-                                            String medicalCertificate = doctor.get("medicalCertificate").toString();
-                                            String description = doctor.get("description").toString();
-                                            String location = distanceOneDecimalPlace.toString() + " Miles";
-                                            //to get the book Id we use getObjectId. refer to parse documentation for android
-                                            String doctorId = doctor.getObjectId().toString();
+                                                String photoLink = doctor.get("photoLink").toString();
+                                                String name = doctor.get("name").toString();
+                                                String surname = doctor.get("surname").toString();
+                                                String sex = doctor.get("sex").toString();
+                                                String age = doctor.get("age").toString();
+                                                String specialty = doctor.get("specialty").toString();
+                                                String currentHospitalOfService = doctor.get("currentHospitalOfService").toString();
+                                                String yearsOfExperience = doctor.get("yearsOfExperience").toString();
+                                                String email = "defaultdoctor@mail.com"; //to be reviewed later.
+                                                String primaryMobileNumber = doctor.get("primaryMobileNumber").toString();
+                                                String medicalCertificate = doctor.get("medicalCertificateLink").toString();
+                                                String description = doctor.get("description").toString();
+                                                String location = distanceOneDecimalPlace.toString() + " Miles";
+                                                //to get the book Id we use getObjectId. refer to parse documentation for android
+                                                String doctorId = doctor.getObjectId().toString();
 
-                                            //this block makes sure that doctorslocation has a value if not, it should be null so that the position number is maintained
-                                            if (doctorsLocation != null) {
-                                                doctorsLatitudes.add(doctorsLocation.getLatitude());
-                                                doctorsLongitudes.add(doctorsLocation.getLongitude());
-                                            } else {
-                                                doctorsLatitudes.add(null);
-                                                doctorsLatitudes.add(null);
+                                                //this block makes sure that doctorslocation has a value if not, it should be null so that the position number is maintained
+                                                if (doctorsLocation != null) {
+                                                    doctorsLatitudes.add(doctorsLocation.getLatitude());
+                                                    doctorsLongitudes.add(doctorsLocation.getLongitude());
+                                                } else {
+                                                    doctorsLatitudes.add(null);
+                                                    doctorsLatitudes.add(null);
+                                                }
+                                                Log.i("===DOCTORID==== ", doctorId);
+                                                doctorsList.add(new DoctorsModel(name, surname, sex, age, specialty, currentHospitalOfService,
+                                                        yearsOfExperience, email, primaryMobileNumber, medicalCertificate,
+                                                        photoLink, description, location, doctorId));
                                             }
-                                            Log.i("===DOCTORID==== ", doctorId);
-                                            doctorsList.add(new DoctorsModel(name, surname, sex, age, specialty, currentHospitalOfService,
-                                                    yearsOfExperience, email, primaryMobileNumber, medicalCertificate,
-                                                    photoLink, description, location, doctorId));
                                         }
                                     }
-                                }
-                                try {
-                                    progressBar.setVisibility(View.GONE);
-                                    doctorsAdapter = new DoctorsAdapter(getActivity(), doctorsList);
-                                    listView.setAdapter(doctorsAdapter);
+                                    try {
+                                        progressBar.setVisibility(View.GONE);
+                                        doctorsAdapter = new DoctorsAdapter(getActivity(), doctorsList);
+                                        listView.setAdapter(doctorsAdapter);
 
-                                    listView.setTextFilterEnabled(true);
-                                } catch (NullPointerException ex) {
-                                    e.printStackTrace();
-                                } catch (Exception ex) {
-                                    e.printStackTrace();
+                                        listView.setTextFilterEnabled(true);
+                                    } catch (NullPointerException ex) {
+                                        e.printStackTrace();
+                                    } catch (Exception ex) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
-                    } catch (NullPointerException ex) {
-                        Toast.makeText(getActivity(), "Couldn't get your Location " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                        ex.printStackTrace();
-                        getFragmentManager().popBackStackImmediate();
-                    } catch (Exception ex) {
-                        Toast.makeText(getActivity(), "Error " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-                        ex.printStackTrace();
-                        getFragmentManager().popBackStackImmediate();
+                            });
+                        } catch (NullPointerException ex) {
+                            Toast.makeText(getActivity(), "Couldn't get your Location " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            ex.printStackTrace();
+                            getFragmentManager().popBackStackImmediate();
+                        } catch (Exception ex) {
+                            Toast.makeText(getActivity(), "Error " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            ex.printStackTrace();
+                            getFragmentManager().popBackStackImmediate();
+                        }
+                    } else {
+                        Log.i("Location ", "not available");
                     }
-                } else {
-                    Log.i("Location ", "not available");
                 }
-            }
-        });
+            });
+        }
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

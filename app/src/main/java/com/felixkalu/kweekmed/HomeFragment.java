@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.felixkalu.heart_rate_monitor.HeartRateMonitor;
 import com.felixkalu.simplealarms.ui.MainFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseUser;
@@ -215,7 +216,19 @@ public class HomeFragment extends Fragment {
                                 getFragmentManager().popBackStackImmediate();
                             }
                         } else {
-                            Log.i("Location ", "not available");
+                            try {
+                                String locationString = Double.toString(9.999) + "," + Double.toString(9.999);
+                                String url = "https://www.google.com/maps/search/pharmacy/@" + locationString + "z/data=!3m1!4b1";
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                                startActivity(intent);
+                            } catch (NullPointerException e) {
+                                e.printStackTrace();
+                                getFragmentManager().popBackStackImmediate();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                getFragmentManager().popBackStackImmediate();
+                            }
                         }
                     }
                 });
@@ -321,4 +334,6 @@ public class HomeFragment extends Fragment {
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
     }
+
+
 }

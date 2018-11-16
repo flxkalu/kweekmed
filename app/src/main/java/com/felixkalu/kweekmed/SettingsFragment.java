@@ -26,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.LogInCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -297,7 +298,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        //Signup doctors textview
+        //SignUp doctors textView
         signUpDoctorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -395,6 +396,7 @@ public class SettingsFragment extends Fragment {
                     }
                 } else {
                     Log.i("Location ", "not available");
+                    Toast.makeText(getActivity(), "Please ensure that Location Services is turned ON", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -404,6 +406,15 @@ public class SettingsFragment extends Fragment {
 
         try {
             ParseUser patient = new ParseUser();
+
+            //this three lines of codes gives gives user flxkalu write access and gives everybody else read access
+            //that way, flxkalu can change user properties when he is logged in on the back end.
+            //ParseACL groupACL = new ParseACL();
+            //groupACL.setPublicReadAccess(true);
+            //groupACL.setPublicWriteAccess(true);
+            //groupACL.setWriteAccess("US46UMvUNb", true);
+
+            //patient.setACL(groupACL);
 
             patient.setUsername(usernmame);
             patient.setEmail(email);
