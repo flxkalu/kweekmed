@@ -3,6 +3,8 @@ package com.felixkalu.kweekmed;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,18 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
-        getActivity().setTitle("Medical News");
+        //hide the activity action bar on this fragment since this fragment has its own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
+        toolbar.setTitle("News Updates");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         WebView webView = (WebView)v.findViewById(R.id.newsWebView);
         webView.getSettings().setJavaScriptEnabled(true);

@@ -4,6 +4,8 @@ package com.felixkalu.kweekmed;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +54,18 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_symptoms_checker, container, false);
 
-        getActivity().setTitle("Select All Symptoms");
+        //hide the activity action bar on this fragment since this fragment has its own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
+        toolbar.setTitle("Symptoms Checker");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         SearchView symptomsSearchView = (SearchView)v.findViewById(R.id.symptomsSearchView);
         symptomsSearchView.setOnQueryTextListener(this);

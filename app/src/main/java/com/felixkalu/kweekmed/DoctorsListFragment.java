@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,7 +67,18 @@ public class DoctorsListFragment extends Fragment implements SearchView.OnQueryT
 
         View v = inflater.inflate(R.layout.fragment_doctors_list, container, false);
 
-        getActivity().setTitle("Doctors & their Locations");
+        //hide the activity action bar on this fragment since this fragment has its own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
+        toolbar.setTitle("Verified Doctors");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         client = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -98,6 +111,7 @@ public class DoctorsListFragment extends Fragment implements SearchView.OnQueryT
 
                             //this ensures that it retrieves only doctors from parse user
                             query.whereEqualTo("userType", "doctor");
+                            query.whereEqualTo("isDoctorActive", true);
                             //this line arranges the list according to the closest doctors around the device
                             query.whereNear("doctorsLocation", deviceLocation);
                             //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.

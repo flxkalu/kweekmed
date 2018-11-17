@@ -4,6 +4,8 @@ package com.felixkalu.kweekmed;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,19 @@ public class IssuesListFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_possible_issues, container, false);
 
-        getActivity().setTitle("Possible Conditions");
+        //hide the activity action bar on this fragment since this fragment has its own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
+        toolbar.setTitle("Possible Conditions");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         possibleIssuesListView = (ListView)v.findViewById(R.id.possibleIssuesListView);
         progressBar = (ProgressBar) v.findViewById(R.id.possibleIssuesProgressBar);

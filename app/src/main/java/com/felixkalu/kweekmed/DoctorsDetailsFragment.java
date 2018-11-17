@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +35,19 @@ public class DoctorsDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_doctors_details, container, false);
 
-        //set the title of the page to the name of the current doctor
-        getActivity().setTitle(getArguments().getString("name")+" "+getArguments().getString("surname"));
+        //hide the activity action bar on this fragment since this fragment has its own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.backarrow);
+        toolbar.setTitle(getArguments().getString("name")+" "+getArguments().getString("surname"));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
 
         ImageView doctorPicture = (ImageView)v.findViewById(R.id.doctorPicture);
         ImageButton locationImageButton = (ImageButton)v.findViewById(R.id.locationImageButton);

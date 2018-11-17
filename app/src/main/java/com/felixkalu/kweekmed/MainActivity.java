@@ -11,8 +11,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -176,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     //this method ensures that when the app is on the home page..
     //the back button does not open a blank activity or open a fragment inside another fragment
     @Override
@@ -232,4 +232,5 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
     }
+
 }

@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,7 +83,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        getActivity().setTitle("Home");
+        //show the activity actionbar on this fragment
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        getActivity().setTitle("Kweek Med Home");
 
         client = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -238,7 +241,12 @@ public class HomeFragment extends Fragment {
         homeSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+                IssuesListFragment possibleIssuesFragment = new IssuesListFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                fragmentTransaction.replace(R.id.main_frame, possibleIssuesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
@@ -334,6 +342,4 @@ public class HomeFragment extends Fragment {
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
     }
-
-
 }

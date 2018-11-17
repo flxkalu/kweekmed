@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,8 @@ public class MyProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
+        //show the activity action bar on this fragment since this fragment does not have it's own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         getActivity().setTitle("My Profile");
 
         if(user!=null) {
