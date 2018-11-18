@@ -101,9 +101,9 @@ public class MyProfileFragment extends Fragment {
             }
 
             //change the verify textview pending if the user is verified or not
-            if(user.getBoolean("verify")==true) {
+            if(user.getBoolean("verify")) {
                 verifyTextView.setText("Verified");
-            } else if(user.getBoolean("verify")==false) {
+            } else if(!user.getBoolean("verify")) {
                 verifyTextView.setText("Not verified");
             } else {
                 verifyTextView.setText("N/A");

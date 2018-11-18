@@ -62,7 +62,7 @@ public class DiagnosisFragment extends Fragment {
         symptomIds = getArguments().getStringArrayList("symptomIds");
         symptomNames = getArguments().getStringArrayList("symptomNames");
 
-        String url = "https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=[";
+        String url = "https://healthservice.priaid.ch/diagnosis?symptoms=[";
         String ids = getSymptomIdsString(symptomIds);
 
         String token = HomeFragment.token;

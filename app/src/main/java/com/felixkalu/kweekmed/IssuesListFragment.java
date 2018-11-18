@@ -61,7 +61,7 @@ public class IssuesListFragment extends Fragment {
         possibleIssuesListView = (ListView)v.findViewById(R.id.possibleIssuesListView);
         progressBar = (ProgressBar) v.findViewById(R.id.possibleIssuesProgressBar);
 
-        String url = "https://sandbox-healthservice.priaid.ch/issues?token=";
+        String url = "https://healthservice.priaid.ch/issues?token=";
         String language = "&format=json&language=en-gb";
         String token = HomeFragment.token;
 

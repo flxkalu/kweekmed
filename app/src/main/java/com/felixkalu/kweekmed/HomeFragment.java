@@ -66,10 +66,10 @@ public class HomeFragment extends Fragment {
 
     private Location deviceCurrentLocation;
 
-    String userName = "flxkalu@hotmail.co.uk";
-    String password = "s3ZYp2q9B4Dac8CSe";
-    String authUrl = "https://sandbox-authservice.priaid.ch/login";
-    String healthUrl = "https://sandbox-healthservice.priaid.ch";
+    String userName = "Hi4j5_HOTMAIL_CO_UK_AUT";
+    String password = "i3GLn5c6NKk4s7MFp";
+    String authUrl = "https://authservice.priaid.ch/login";
+    String healthUrl = "https://healthservice.priaid.ch";
     String language = "en-gb";
 
     public static String token;

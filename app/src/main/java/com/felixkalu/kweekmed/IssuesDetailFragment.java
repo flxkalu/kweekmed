@@ -66,7 +66,7 @@ public class IssuesDetailFragment extends Fragment {
         synonymsTextView = (TextView)v.findViewById(R.id.synonymsTextView);
         treatmentDescriptionTextView = (TextView)v.findViewById(R.id.treatmentDescriptionTextView);
 
-        String url = "https://sandbox-healthservice.priaid.ch/issues/";
+        String url = "https://healthservice.priaid.ch/issues/";
         String language = "&format=json&language=en-gb";
         String token = HomeFragment.token;
         String issueId = getArguments().getString("issueId");

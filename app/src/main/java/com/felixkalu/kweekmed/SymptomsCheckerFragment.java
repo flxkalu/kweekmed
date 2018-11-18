@@ -102,7 +102,7 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
         progressBar = (ProgressBar) v.findViewById(R.id.progress_loader);
         listView = (ListView) v.findViewById(R.id.listview);
 
-        String url = "https://sandbox-healthservice.priaid.ch/symptoms?token=";
+        String url = "https://healthservice.priaid.ch/symptoms?token=";
         String language = "&format=json&language=en-gb";
 
         Log.i("Token from SCF:", token);
