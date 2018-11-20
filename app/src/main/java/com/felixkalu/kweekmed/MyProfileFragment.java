@@ -4,20 +4,25 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,19 +30,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.cloudinary.utils.ObjectUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
 
 
@@ -51,6 +57,9 @@ public class MyProfileFragment extends Fragment {
     ProgressBar profilePictureProgressBar;
     ImageView user_profile_photo;
 
+    //used for getting current location of the device
+    private FusedLocationProviderClient client;
+
     public MyProfileFragment() {
         // Required empty public constructor
     }
@@ -61,9 +70,14 @@ public class MyProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
+
         //show the activity action bar on this fragment since this fragment does not have it's own toolbar
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         getActivity().setTitle("My Profile");
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         if(user!=null) {
 
@@ -87,17 +101,24 @@ public class MyProfileFragment extends Fragment {
             final EditText profilePasswordEditText = (EditText) v.findViewById(R.id.profilePasswordEditText);
             final EditText profileConfirmPasswordEditText = (EditText) v.findViewById(R.id.profileConfirmPasswordEditText);
             final EditText profileAgeEditText = (EditText)v.findViewById(R.id.ageEditText);
+            TextView updateProfileLocationTextView = (TextView)v.findViewById(R.id.updateProfileLocationTextView);
 
             user_profile_photo = (ImageView) v.findViewById(R.id.user_profile_photo);
-            ImageView uploadLogoImageView = (ImageView) v.findViewById(R.id.uploadLogoImageView);
+            ImageView saveLocationImageView = (ImageView) v.findViewById(R.id.saveLocationImageView);
+
+            Button updateProfileButton =(Button)v.findViewById(R.id.updateProfileButton);
 
             RelativeLayout profile_layout = (RelativeLayout) v.findViewById(R.id.profile_layout);
 
             //change the second banner color to blue or red depending if the user is a patient or doctor
             if(user.get("userType").toString().matches("patient")) {
                 profile_layout.setBackgroundColor(Color.parseColor("#2b3392"));
+                saveLocationImageView.setVisibility(View.INVISIBLE);
+                updateProfileLocationTextView.setVisibility(View.INVISIBLE);
             } else if(user.get("userType").toString().matches("doctor")){
                 profile_layout.setBackgroundColor(Color.parseColor("#950110"));
+                saveLocationImageView.setVisibility(View.VISIBLE);
+                updateProfileLocationTextView.setVisibility(View.VISIBLE);
             }
 
             //change the verify textview pending if the user is verified or not
@@ -126,7 +147,7 @@ public class MyProfileFragment extends Fragment {
             }
 
             //For updating profile info
-            uploadLogoImageView.setOnClickListener(new View.OnClickListener() {
+            updateProfileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String newName = profileNameEditText.getText().toString();
@@ -152,6 +173,7 @@ public class MyProfileFragment extends Fragment {
                             //to update user profile
                             try {
                                 user.save();
+                                Toast.makeText(getActivity(), "Profile Updated", Toast.LENGTH_SHORT).show();
                             } catch (ParseException e) {
                                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
@@ -188,16 +210,50 @@ public class MyProfileFragment extends Fragment {
                     }
                 }
             });
+
+            //get and save the device current location
+            saveLocationImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(ActivityCompat.checkSelfPermission(getActivity(),ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermission();
+                    } else {
+                        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                ParseGeoPoint deviceLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+
+                                if (location != null) {
+                                    user.put("doctorsLocation", deviceLocation);
+                                    try {
+                                        user.save();
+                                        Toast.makeText(getActivity(),"Location Updated", Toast.LENGTH_SHORT).show();
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getActivity(),"Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getActivity(),"Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Log.i("Current Location: ", "not available");
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         } else {
-            Toast.makeText(getActivity(), "Log In First", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Log In", Toast.LENGTH_SHORT).show();
             //redirect to home page
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            //fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
             fragmentTransaction.replace(R.id.main_frame, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+
         return v;
     }
 
@@ -291,5 +347,9 @@ public class MyProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
         }
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }

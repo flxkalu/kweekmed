@@ -103,7 +103,7 @@ public class SettingsFragment extends Fragment {
                                         ParseUser.logInInBackground(userName, password, new LogInCallback() {
                                             public void done(ParseUser user, ParseException e) {
                                                 if (user != null) {
-                                                    Toast.makeText(getActivity(), "You have Signed in", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getActivity(), "Welcome", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
                                                     //Redirect to MyProfile fragment.
                                                     MyProfileFragment fragment = new MyProfileFragment();

@@ -113,6 +113,7 @@ public class DoctorsListFragment extends Fragment implements SearchView.OnQueryT
                             query.whereEqualTo("userType", "doctor");
                             query.whereEqualTo("isDoctorActive", true);
                             //this line arranges the list according to the closest doctors around the device
+
                             query.whereNear("doctorsLocation", deviceLocation);
                             //you can use query.whereEqualTo() here to also add search constraints like specialty of doctor needed. Would be used in the future.
 
