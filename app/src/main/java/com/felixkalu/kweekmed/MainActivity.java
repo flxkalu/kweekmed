@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             //this line of code is used to animate fragment transitions
-            //fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+            fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
             fragmentTransaction.replace(R.id.main_frame, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -251,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn() {
-
         if (user == null) {
 
             final AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);

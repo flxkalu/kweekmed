@@ -3,6 +3,7 @@ package com.felixkalu.kweekmed;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -26,18 +27,12 @@ public class HelpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_help, container, false);
 
-        //hide the activity action bar on this fragment since this fragment has its own toolbar
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        //show the activity action bar on this fragment since this fragment does not have it's own toolbar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        getActivity().setTitle("Help");
 
-        Toolbar toolbar = v.findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.backarrow);
-        toolbar.setTitle("Enter Age and Gender");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         return v;
     }

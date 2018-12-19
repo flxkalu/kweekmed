@@ -3,11 +3,11 @@
     package="com.felixkalu.kweekmed">
 
     <!-- for heart rate monitor -->
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.flash"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,12 +17,12 @@
 
     <application
         android:name=".StarterApplication"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/homepagelogo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/homepagelogo"
         android:supportsRtl="true"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -37,7 +37,6 @@
         </activity>
         <activity android:name="com.felixkalu.simplealarms.ui.AddEditAlarmActivity" />
         <activity android:name="com.felixkalu.heart_rate_monitor.HeartRateMonitor" />
-
         <activity
             android:name="com.felixkalu.simplealarms.ui.AlarmLandingPageActivity"
             android:theme="@style/AlertLandingPageTheme" />
@@ -45,7 +44,6 @@
         <service android:name="com.felixkalu.simplealarms.service.LoadAlarmsService" />
 
         <receiver android:name="com.felixkalu.simplealarms.service.LoadAlarmsReceiver" />
-
         <receiver android:name="com.felixkalu.simplealarms.service.AlarmReceiver" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

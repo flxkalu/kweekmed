@@ -105,8 +105,6 @@ public class SymptomsCheckerFragment extends Fragment implements SearchView.OnQu
         String url = "https://healthservice.priaid.ch/symptoms?token=";
         String language = "&format=json&language=en-gb";
 
-        Log.i("Token from SCF:", token);
-
         DownloadTask task = new DownloadTask();
         task.execute(url.concat(token).concat(language));
         //get symptoms from api and add them all into the the arraylist

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ import com.parse.SignUpCallback;
 import org.w3c.dom.Text;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.parse.ParseUser.requestPasswordReset;
+import static com.parse.ParseUser.requestPasswordResetInBackground;
 
 
 /**
@@ -64,6 +67,9 @@ public class SettingsFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         getActivity().setTitle("Settings");
 
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         client = LocationServices.getFusedLocationProviderClient(getActivity());
 
         TextView signInTextView = (TextView)v.findViewById(R.id.signInTextView);
@@ -86,6 +92,7 @@ public class SettingsFragment extends Fragment {
                     View mView = getLayoutInflater().inflate(R.layout.fragment_sign_in, null);
                     final EditText usernameEditText = (EditText) mView.findViewById(R.id.loginUserNameEditText);
                     final EditText passwordEditText = (EditText) mView.findViewById(R.id.loginUserPasswordEditText);
+                    final TextView forgotPasswordTextView = (TextView) mView.findViewById(R.id.forgotPasswordTextView);
                     Button singInButton = (Button) mView.findViewById(R.id.signInButton);
 
                     mBuilder.setView(mView);
@@ -126,6 +133,13 @@ public class SettingsFragment extends Fragment {
                             } else {
                                 Toast.makeText(getActivity(), "Sign Out First", Toast.LENGTH_SHORT).show();
                             }
+                        }
+                    });
+
+                    forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //code for password reset goes here...
                         }
                     });
                     //to show the dialog
@@ -368,13 +382,14 @@ public class SettingsFragment extends Fragment {
                     try {
                         ParseUser doctor = new ParseUser();
                         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-
+                        
                         doctor.setUsername(userName);
                         doctor.setEmail(email);
                         doctor.setPassword(password);
                         doctor.put("primaryMobileNumber", primaryMobileNumber);
                         doctor.put("doctorsLocation", parseGeoPoint);
                         doctor.put("userType", "doctor");
+                        doctor.put("uploader", userName);
                         doctor.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
 
                         doctor.signUpInBackground(new SignUpCallback() {
@@ -410,20 +425,12 @@ public class SettingsFragment extends Fragment {
         try {
             ParseUser patient = new ParseUser();
 
-            //this three lines of codes gives gives user flxkalu write access and gives everybody else read access
-            //that way, flxkalu can change user properties when he is logged in on the back end.
-            //ParseACL groupACL = new ParseACL();
-            //groupACL.setPublicReadAccess(true);
-            //groupACL.setPublicWriteAccess(true);
-            //groupACL.setWriteAccess("US46UMvUNb", true);
-
-            //patient.setACL(groupACL);
-
             patient.setUsername(usernmame);
             patient.setEmail(email);
             patient.setPassword(password);
             patient.put("primaryMobileNumber", primaryMobileNumber);
             patient.put("userType", "patient");
+            patient.put("uploader", usernmame);
             patient.put("photoLink", "https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png");
 
             patient.signUpInBackground(new SignUpCallback() {

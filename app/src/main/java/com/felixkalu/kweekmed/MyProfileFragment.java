@@ -163,6 +163,7 @@ public class MyProfileFragment extends Fragment {
                     user.put("surname", newSurname);
                     user.put("age", newAge);
                     user.setUsername(newUserName);
+                    user.put("lastModifiedBy", newName);
                     user.put("primaryMobileNumber", newMobileNumber);
                     user.setEmail(newEmailAddress);
 

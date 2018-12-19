@@ -75,5 +75,6 @@
 
     <!-- default profile picture image link -->
     <string name="DEFAULT_PROFILE_PICTURE_LINK">https://res.cloudinary.com/the-software-gurus-place/image/upload/v1540382277/kweekmed/profilepictures/noprofilepicture.png</string>
+    <string name="title_activity_help">helpActivity</string>
 
 </resources>
